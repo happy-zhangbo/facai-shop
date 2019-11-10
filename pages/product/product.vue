@@ -2,7 +2,7 @@
 	<view>
 		<cu-custom bgColor="bg-black shadow" ><block slot="content">产品</block></cu-custom>
 		
-		<scroll-view scroll-x class="bg-white nav" scroll-with-animation :scroll-left="scrollLeft">
+		<scroll-view scroll-x class="bg-white nav text-gray" scroll-with-animation :scroll-left="scrollLeft">
 			<view class="cu-item" :class="index==TabCur?'text-black cur':''" v-for="(item,index) in 10" :key="index" @tap="tabSelect" :data-id="index">
 				分类{{index}}
 			</view>

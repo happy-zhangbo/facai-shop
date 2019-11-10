@@ -117,6 +117,10 @@
             "path" : "pages/my/my",
             "style" : {}
         }
+		,{
+		    "path" : "pages/my/order",
+		    "style" : {}
+		}
     ],
 	"globalStyle": {
 		"mp-alipay": {
