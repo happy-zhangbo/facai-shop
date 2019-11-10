@@ -109,6 +109,10 @@
             "path" : "pages/product/product",
             "style" : {}
         }
+		,{
+		    "path" : "pages/product/product-detail",
+		    "style" : {}
+		}
         ,{
             "path" : "pages/cart/cart",
             "style" : {}
