@@ -15,7 +15,7 @@
 						<view class="padding-left flex align-center"><checkbox :class="item.checked?'checked black':''" :checked="item.checked" :value="index+''"></checkbox></view>
 						<view class="flex-sub padding-sm">
 							<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
-							 mode="aspectFill" style="width: 100%;height: 100%;" class="radius"></image>
+							 mode="aspectFill" style="width: 100%;height: 115px;" class="radius"></image>
 						</view>
 						<view class="flex-treble padding-sm">
 							<view>产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}</view>

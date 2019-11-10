@@ -17,11 +17,11 @@
 			</view>
 		</view>
 		<view class="cu-card">
-			<view class="cu-item" v-for="(item,index) in 5" :key="index">
+			<view class="cu-item" v-for="(item,index) in 5" :key="index" @tap="toDetail">
 				<view class="flex">
 					<view class="flex-sub padding-sm">
 						<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
-						 mode="aspectFill" style="width: 100%;height: 100%;" class="radius"></image>
+						 mode="aspectFill" style="width: 100%;height: 115px;" class="radius"></image>
 					</view>
 					
 					<view class="flex-treble padding-sm">
@@ -107,6 +107,11 @@
 			}
 		},
 		methods: {
+			toDetail(){
+				uni.navigateTo({
+					url:"../product/product-detail"
+				})
+			},
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
