@@ -45,7 +45,7 @@
 			</view>
 			
 		</view>
-		<view class="cu-modal" :class="addToCartModel?'show':''">
+		<view class="cu-modal" :class="addToCartModel?'show':''" @touchmove.stop.prevent="">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
 					<view class="content">选择配置</view>
@@ -59,7 +59,7 @@
 							<view class="title">数量</view>
 							<uni-number-box :value="numberValue" @change="change" />
 						</view>
-						<view class="padding">
+						<view class="padding-lr">
 							<view class="title text-left margin-bottom-sm">规格</view>
 							<scroll-view scroll-y style="height: 300px;">
 								<radio-group class="block" @change="radioChange">
@@ -75,7 +75,9 @@
 								</radio-group>
 							</scroll-view>
 						</view>
-		
+						<view class="padding-lr text-red">
+							总价：<text class="text-price text-xl text-bold">1000.00</text>
+						</view>
 					</form>
 				</view>
 				<view class="cu-bar bg-white">

@@ -35,14 +35,14 @@
 								</text>
 							</view>
 							<view>
-								<button class="cu-btn text-sm bg-black shadow-blur" @tap="addToCart"><text class="cuIcon-cart margin-right-xs"></text>加入购物车 </button>
+								<button class="cu-btn text-sm bg-black shadow-blur" @click.stop="addToCart"><text class="cuIcon-cart margin-right-xs"></text>加入购物车 </button>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="cu-modal" :class="addToCartModel?'show':''">
+		<view class="cu-modal" :class="addToCartModel?'show':''" @touchmove.stop.prevent="">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
 					<view class="content">选择配置</view>
@@ -61,7 +61,7 @@
 							<scroll-view scroll-y style="height: 300px;">
 								<radio-group class="block" @change="radioChange">
 									<view class="cu-list menu text-left">
-										<view class="cu-item" v-for="(item,index) in 5" :key="index">
+										<view class="cu-item" v-for="(item,index) in 10" :key="index">
 											<label class="flex justify-between align-center flex-sub">
 												<view class="flex-sub">规格 {{index +1}}</view>
 												<radio class="" :class="radio=='radio' + index?'checked black':''" :checked="radio=='radio' + index?true:false"
@@ -72,7 +72,9 @@
 								</radio-group>
 							</scroll-view>
 						</view>
-
+						<view class="padding-lr text-red">
+							总价：<text class="text-price text-xl text-bold">1000.00</text>
+						</view>
 					</form>
 				</view>
 				<view class="cu-bar bg-white">
