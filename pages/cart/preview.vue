@@ -109,12 +109,15 @@
 				datetime:"请选择配送时间",
 				selectList:[{
 					label:"在线支付",
-					value:1
+					value:0
 				},{
 					label:"货到付款",
-					value:2
+					value:1
 				},{
 					label:"签字付款",
+					value:2
+				},{
+					label:"现金支付",
 					value:3
 				}],
 			}
