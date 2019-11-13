@@ -14,6 +14,12 @@
 					<text class="text-grey">订单</text>
 				</navigator>
 			</view>
+			<view class="cu-item arrow">
+				<navigator class="content" hover-class="none" url="/pages/my/order" open-type="navigate">
+					<text class="cuIcon-locationfill text-black"></text>
+					<text class="text-grey">地址</text>
+				</navigator>
+			</view>
 			<view class="cu-item">
 				<navigator class="content" hover-class="none" url="../list/list" open-type="navigate">
 					<text class="cuIcon-servicefill text-black"></text>
@@ -25,7 +31,7 @@
 					<text class="cuIcon-crownfill text-black"></text>
 					<text class="text-grey">关于</text>
 				</navigator>
-			</view>	
+			</view>
 		</view>
 		<view class="cu-tabbar-height"></view>
 	</view>

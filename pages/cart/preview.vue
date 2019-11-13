@@ -12,40 +12,49 @@
 							<text class="cuIcon cuIcon-locationfill text-white"></text>
 						</view>
 					</view>
-
+					
 					<view class="basis-xl padding">
-						<view class="text-lg">张博<text class="margin-left-xs text-df text-gray">18010091016</text></view>
+						<view class="text-lg">张博<text class="margin-left-sm text-df text-grey">18010091016</text></view>
 						<view class="text-df">北京北京市大兴区新华小区5单元607</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<form>
-			<view class="margin-bottom-sm">
-				<view class="cu-form-group">
-					<view class="title">配送日期</view>
-					<picker mode="date" :value="date" start="2019-11-13" @change="DateChange">
-						<view class="picker">
-							{{date}}
-						</view>
-					</picker>
+			<view class="cu-list menu margin-bottom-sm">
+				<view class="cu-item arrow" @tap="toggleTab('limitHour',0)">
+					<view class="content">
+						<text class="cuIcon-deliver_fill"></text>
+						<text class="">配送时间</text>
+					</view>
+					<view class="action">
+						<text class="">{{ datetime }}</text>
+					</view>
 				</view>
-				<view class="cu-form-group">
-					<view class="title">配送时间</view>
-					<picker mode="time" :value="time" start="00:00" end="23:59" @change="TimeChange">
-						<view class="picker">
-							{{time}}
-						</view>
-					</picker>
+				<w-picker
+					mode="limitHour" 
+					dayStep="60"
+					@confirm="DateTimeChange"
+					ref="limitHour" 
+					themeColor="#f00"
+				></w-picker>
+				<view class="cu-item arrow" @tap="toggleTab('selector',0)">
+					<view class="content">
+						<text class="cuIcon-sponsorfill"></text>
+						<text class="">支付方式</text>
+					</view>
+					<view class="action">
+						<text class="">{{ selectList[index].label }}</text>
+					</view>
 				</view>
-				<view class="cu-form-group">
-					<view class="title">支付方式</view>
-					<picker @change="PickerChange" :value="index" :range="picker">
-						<view class="picker">
-							{{index>-1?picker[index]:'禁止换行，超出容器部分会以 ... 方式截断'}}
-						</view>
-					</picker>
-				</view>
+				<w-picker
+					v-if="selectList.length!=0"
+					mode="selector" 
+					@confirm="PayMethodChange" 
+					ref="selector" 
+					themeColor="#f00"
+					:selectList="selectList"
+				></w-picker>
 			</view>
 		</form>
 		<view class="cu-list menu margin-bottom-sm" style="margin-top: 0px;">
@@ -71,7 +80,7 @@
 		</view>
 		<view class="cu-item">
 			<view class="cu-form-group">
-				<textarea maxlength="-1" :disabled="modalName!=null" @input="textareaAInput" placeholder="订单备注"></textarea>
+				<textarea maxlength="-1" placeholder="订单备注"></textarea>
 			</view>
 		</view>
 		<view class="cu-bar bg-white tabbar foot shop justify-end">
@@ -88,13 +97,26 @@
 </template>
 
 <script>
+	import wPicker from "@/components/w-picker/w-picker.vue";
 	export default {
+		components:{
+			wPicker
+		},
 		data() {
 			return {
 				index: 0,
-				date: '2018-12-25',
-				time: '12:01',
-				picker: ['在线支付', '货到付款', '签字付款']
+				mode:"range",
+				datetime:"请选择配送时间",
+				selectList:[{
+					label:"在线支付",
+					value:1
+				},{
+					label:"货到付款",
+					value:2
+				},{
+					label:"签字付款",
+					value:3
+				}],
 			}
 		},
 		onLoad() {
@@ -102,14 +124,11 @@
 			
 		},
 		methods: {
-			PickerChange(e) {
-				this.index = e.detail.value
+			PayMethodChange(val) {
+				this.index = val.defaultVal;
 			},
-			TimeChange(e) {
-				this.time = e.detail.value
-			},
-			DateChange(e) {
-				this.date = e.detail.value
+			DateTimeChange(val) {
+				this.datetime = val.result;
 			},
 			getUserLocation(){
 				var that = this;
@@ -132,18 +151,17 @@
 					}
 				});
 				
-				
-				
-				
-				
-				
+			},
+			toggleTab(item,index){
+				this.$refs[item].show();
+			},
+			onConfirm(val){
+				this.resultInfo=val;
 			}
 		}
 	}
 </script>
 
 <style>
-	uni-picker .uni-picker-action.uni-picker-action-confirm{  
-	        color: red !important;  
-	}
+
 </style>
