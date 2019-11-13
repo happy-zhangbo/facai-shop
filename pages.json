@@ -125,6 +125,10 @@
 		    "path" : "pages/my/order",
 		    "style" : {}
 		}
+		,{
+			"path":"pages/cart/preview",
+			"style":{}
+		}
     ],
 	"globalStyle": {
 		"mp-alipay": {

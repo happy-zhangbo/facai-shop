@@ -90,7 +90,7 @@
 </template>
 
 <script>
-	import uniNumberBox from '@/component/uni-number-box/uni-number-box.vue'
+	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
 	export default {
 		components: {
 			uniNumberBox

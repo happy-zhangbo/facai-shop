@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import App from './App'
+import axios from 'common/axios'
+
+Vue.prototype.$req = axios;
 
 import basics from './pages/basics/home.vue'
 Vue.component('basics',basics)
@@ -22,6 +25,7 @@ Vue.component('my',my)
 
 import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom',cuCustom)
+
 
 
 Vue.config.productionTip = false

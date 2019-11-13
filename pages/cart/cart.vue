@@ -47,7 +47,7 @@
 			
 			<view class="margin-lr">
 				合计：<text class="text-price text-red margin-right">1000.00</text>
-				<button class="cu-btn bg-red round shadow-blur">立即订购</button>
+				<button class="cu-btn bg-red round shadow-blur" @tap="toPreview">立即订购</button>
 			</view>
 			
 		</view>
@@ -88,6 +88,11 @@
 			}
 		},
 		methods: {
+			toPreview(){
+				uni.navigateTo({
+					url:"../cart/preview"
+				})
+			},
 			change(event) {
 				var items = this.cartList,
 					ids = event.ids;
