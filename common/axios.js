@@ -11,6 +11,15 @@ const get = function(url,param,callback){
 	})
 }
 
+const post = function(url,param,callback){
+	axios.post(url,data)
+	.then(res=>{
+	    callback(res);           
+	}).catch( err => {	
+		console.log(err);
+	})
+}
+
 
 
 export default{
