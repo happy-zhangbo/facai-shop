@@ -2,12 +2,20 @@
 	<view>
 		<cu-custom bgColor="bg-black shadow" ><block slot="content">产品</block></cu-custom>
 		
-		<scroll-view scroll-x class="bg-white nav text-gray" scroll-with-animation :scroll-left="scrollLeft">
+		<scroll-view scroll-x class="bg-white nav text-gray fixed" :style="[{top:CustomBar + 'px'}]" >
 			<view class="cu-item" :class="index==TabCur?'text-black cur':''" v-for="(item,index) in 10" :key="index" @tap="tabSelect" :data-id="index">
 				分类{{index}}
 			</view>
 		</scroll-view>
-		<view class="cu-bar search bg-white">
+		<!-- <scroll-view scroll-x class="bg-white nav text-center fixed" :style="[{top:CustomBar + 'px'}]">
+			<view class="cu-item" :class="index==TabCur?'text-blue cur':''" v-for="(item,index) in tabNav" :key="index" @tap="tabSelect"
+			 :data-id="index">
+				{{tabNav[index]}}
+			</view>
+		</scroll-view> -->
+		
+		
+		<view class="cu-bar search bg-white" style="margin-top: 50px;" >
 			<view class="search-form round">
 				<text class="cuIcon-search"></text>
 				<input @focus="InputFocus" @blur="InputBlur" :adjust-position="false" type="text" placeholder="输入产品名称搜索" confirm-type="search"></input>
@@ -101,6 +109,7 @@
 		},
 		data() {
 			return {
+				CustomBar: this.CustomBar,
 				TabCur: 0,
 				scrollLeft: 0,
 				addToCartModel:false,

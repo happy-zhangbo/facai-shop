@@ -48,11 +48,12 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "",
+        "appid" : "wxf50b7a91ca5f7a0e",
         "setting" : {
             "urlCheck" : false,
             "es6" : true
-        }
+        },
+        "permission" : {}
     },
     "h5" : {
         "title" : "ColorUi for UniApp",
