@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import App from './App'
-import axios from 'common/axios'
+import req from 'common/req'
 import store from './store'
 
-Vue.prototype.$req = axios;
+Vue.prototype.$req = req;
 
 import basics from './pages/basics/home.vue'
 Vue.component('basics',basics)
