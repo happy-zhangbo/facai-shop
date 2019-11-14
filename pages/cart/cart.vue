@@ -10,8 +10,8 @@
 		</view>
 		<checkbox-group class="block" @change="CheckboxChange"  style="margin-top: 55px;">
 			<view class="cu-list bg-white">
-				<uni-swipe-action :options="options1" @click="bindClick">
-					<view class="cu-item solid-bottom" v-for="(item,index) in cartList" :key="index">
+				<uni-swipe-action :options="options1" @click="bindClick" v-for="(item,index) in cartList" :key="index">
+					<view class="cu-item solid-bottom">
 						<view class="flex">
 							<view class="padding-left flex align-center"><checkbox :class="item.checked?'checked black':''" :checked="item.checked" :value="index+''"></checkbox></view>
 							<view class="flex-sub padding-sm">
@@ -68,6 +68,12 @@
 				CustomBar: this.CustomBar,
 				modalName: null,
 				cartList:[{
+					checked:false,
+					numberValue: 1
+				},{
+					checked:false,
+					numberValue: 1
+				},{
 					checked:false,
 					numberValue: 1
 				}],

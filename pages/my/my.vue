@@ -5,8 +5,8 @@
 		</cu-custom>
 		<view class="bg-black shadow padding-xl">
 			<view v-if="hasLogin">
-				<view class="cu-avatar lg round margin-left" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg);"></view>
-				<text class="margin-lr-xl text-xl">张发财</text>
+				<view class="cu-avatar lg round margin-left" :style="{'background-image':'url('+userInfo.avatarUrl+')'}"></view>
+				<text class="margin-lr-xl text-xl">{{ userInfo.userName }}</text>
 			</view>
 			<view v-if="!hasLogin" @tap="login">
 				<view class="cu-avatar lg round margin-left"><text class="cuIcon-people"></text></view>
@@ -56,7 +56,7 @@
 			}
 		},
 		computed:{
-		   ...mapState(['hasLogin'])
+		   ...mapState(['hasLogin','userInfo'])
 		},
 		created() {
 			console.log(this.hasLogin);	
