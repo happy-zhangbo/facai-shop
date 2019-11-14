@@ -87,7 +87,7 @@
 			<view class="margin-lr text-black">
 				<text>共 3 件，</text>
 				<text>合计：<text class="text-price text-red margin-right">1000.00</text></text>
-				<button class="cu-btn bg-red round shadow-blur" @tap="toPreview">立即订购</button>
+				<button class="cu-btn bg-red round shadow-blur" @tap="toPreview">提交订单</button>
 			</view>
 		</view>
 		
