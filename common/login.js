@@ -1,24 +1,31 @@
 import store from '../store'
-import axios from './axios.js'
+import req from './req'
 const login = function(){	
 	uni.login({
 		provider: 'weixin',
 		success: function (loginRes) {
 			console.log(loginRes);
 			//访问后端登录接口，并返回openId和sessionKey
-			getUserInfo()
-			store.commit('change', true);
+			uni.getUserInfo({
+				provider: 'weixin',
+				success(userRes) {
+					var code = loginRes.code;
+					var userinfo = JSON.parse(userRes.rawData);
+					var nickName = userinfo.nickName;
+					var avatarUrl = userinfo.avatarUrl;
+					console.log(userinfo);
+					req.post("userinfo/login_wxLogin",{code:code,nickName:nickName,avatar:avatarUrl}
+					,"",function(res){
+						store.commit('login', res.data.data);
+					})
+				}
+			});
+			
 		}
 	});
 }
 
-const getUserInfo = function(){
-	uni.getUserInfo({
-		success(res){
-			console.log(res);
-		}
-	})
-}
+
 
 export default{
 	login
