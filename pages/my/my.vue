@@ -3,9 +3,15 @@
 		<cu-custom bgColor="bg-black">
 			<block slot="content">我的</block>
 		</cu-custom>
-		<view class="bg-black shadow-blur padding-xl">
-			<view class="cu-avatar lg round margin-left" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg);"></view>
-			<text class="margin-lr-xl text-xl">张发财</text>
+		<view class="bg-black shadow padding-xl">
+			<view v-if="hasLogin">
+				<view class="cu-avatar lg round margin-left" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg);"></view>
+				<text class="margin-lr-xl text-xl">张发财</text>
+			</view>
+			<view v-if="!hasLogin" @tap="login">
+				<view class="cu-avatar lg round margin-left"><text class="cuIcon-people"></text></view>
+				<text class="margin-lr-xl text-xl">点击登录</text>
+			</view>
 		</view>
 		<view class="cu-list menu margin-top-xl card-menu ">
 			<view class="cu-item arrow">
@@ -38,14 +44,30 @@
 </template>
 
 <script>
+	import login from '../../common/login.js'
+	import {
+	  mapState,
+	  mapMutations
+	 } from 'vuex';
 	export default {
 		data() {
 			return {
 				
 			}
 		},
+		computed:{
+		   ...mapState(['hasLogin'])
+		},
+		created() {
+			console.log(this.hasLogin);	
+			// this.$store.commit('change', true)
+			// console.log(this.hasLogin);	
+		},
 		methods: {
-			
+			login(){
+				
+				login.login();
+			}
 		}
 	}
 </script>

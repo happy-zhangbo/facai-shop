@@ -44,12 +44,13 @@
 						<text class="">支付方式</text>
 					</view>
 					<view class="action">
-						<text class="">{{ selectList[index].label }}</text>
+						<text class="">{{ selectLabel }}</text>
 					</view>
 				</view>
 				<w-picker
 					v-if="selectList.length!=0"
-					mode="selector" 
+					mode="selector"
+					:defaultVal="[0]"
 					@confirm="PayMethodChange" 
 					ref="selector" 
 					themeColor="#f00"
@@ -107,6 +108,7 @@
 				index: 0,
 				mode:"range",
 				datetime:"请选择配送时间",
+				selectLabel:"在线支付",
 				selectList:[{
 					label:"在线支付",
 					value:0
@@ -124,11 +126,12 @@
 		},
 		onLoad() {
 			
-			
 		},
 		methods: {
 			PayMethodChange(val) {
+				console.log(val)
 				this.index = val.defaultVal;
+				this.selectLabel = val.result;
 			},
 			DateTimeChange(val) {
 				this.datetime = val.result;
