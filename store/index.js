@@ -5,27 +5,27 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({  
     state: {  
-        uerInfo: {},  
+        userInfo: {},  
         hasLogin: false  
     },  
     mutations: {
-		change(state){
-			state.hasLogin = true;
-		},
+
         login(state, provider) {//改变登录状态  
+			console.log(provider)
             state.hasLogin = true  
-            state.uerInfo.token = provider.token  
-            state.uerInfo.userName = provider.user_name  
+            state.userInfo.token = provider.token  
+            state.userInfo.userName = provider.nickName
+			state.userInfo.avatarUrl = provider.avatar  
             uni.setStorage({//将用户信息保存在本地  
-                key: 'uerInfo',  
-                data: provider  
+                key: 'userInfo',  
+                data: provider 
             })  
         },  
         logout(state) {//退出登录  
             state.hasLogin = false  
-            state.uerInfo = {}  
+            state.userInfo = {}  
             uni.removeStorage({  
-                key: 'uerInfo'  
+                key: 'userInfo'  
             })  
         }  
     }  
