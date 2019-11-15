@@ -9,7 +9,6 @@ const store = new Vuex.Store({
         hasLogin: false  
     },  
     mutations: {
-
         login(state, provider) {//改变登录状态  
 			console.log(provider)
             state.hasLogin = true  
