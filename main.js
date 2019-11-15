@@ -3,6 +3,7 @@ import App from './App'
 import req from 'common/req'
 import store from './store'
 
+
 Vue.prototype.$req = req;
 
 import basics from './pages/basics/home.vue'
@@ -27,6 +28,8 @@ Vue.component('my',my)
 import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom',cuCustom)
 
+import uniPopup from "./components/uni-popup/uni-popup.vue"
+Vue.component('uni-popup',uniPopup)
 
 
 Vue.config.productionTip = false
