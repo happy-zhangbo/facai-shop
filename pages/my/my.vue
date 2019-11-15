@@ -65,8 +65,11 @@
 		},
 		methods: {
 			login(){
-				
-				login.login();
+				uni.showLoading({
+					title:"登录中...",
+					mask:true
+				})
+				login.mplogin();
 			}
 		}
 	}
