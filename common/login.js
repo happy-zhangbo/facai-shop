@@ -1,6 +1,6 @@
 import store from '../store'
 import req from './req'
-const login = function(){	
+const mplogin = function(){	
 	uni.login({
 		provider: 'weixin',
 		success: function (loginRes) {
@@ -17,6 +17,7 @@ const login = function(){
 					req.post("userinfo/login_wxLogin",{code:code,nickName:nickName,avatar:avatarUrl}
 					,"",function(res){
 						store.commit('login', res.data.data);
+						uni.hideLoading()
 					})
 				}
 			});
@@ -28,5 +29,5 @@ const login = function(){
 
 
 export default{
-	login
+	mplogin
 }
