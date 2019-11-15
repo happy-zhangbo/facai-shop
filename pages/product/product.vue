@@ -3,8 +3,8 @@
 		<cu-custom bgColor="bg-black shadow" ><block slot="content">产品</block></cu-custom>
 		
 		<scroll-view scroll-x class="bg-white nav text-gray fixed" :style="[{top:CustomBar + 'px'}]" >
-			<view class="cu-item" :class="index==TabCur?'text-black cur':''" v-for="(item,index) in 10" :key="index" @tap="tabSelect" :data-id="index">
-				分类{{index}}
+			<view class="cu-item" :class="index==TabCur?'text-black cur':''" v-for="(item,index) in productTypeList" :key="index" @tap="tabSelect" :data-id="index">
+				{{item.ptName}}
 			</view>
 		</scroll-view>
 		<!-- <scroll-view scroll-x class="bg-white nav text-center fixed" :style="[{top:CustomBar + 'px'}]">
@@ -20,12 +20,12 @@
 				<text class="cuIcon-search"></text>
 				<input @focus="InputFocus" @blur="InputBlur" :adjust-position="false" type="text" placeholder="输入产品名称搜索" confirm-type="search"></input>
 			</view>
-			<view class="action">
+			<!-- <view class="action">
 				<button class="cu-btn bg-black shadow-blur round">搜索</button>
-			</view>
+			</view> -->
 		</view>
 		<view class="cu-card">
-			<view class="cu-item" v-for="(item,index) in 5" :key="index" @tap="toDetail">
+			<view class="cu-item" v-for="(item,index) in productList" :key="index" @tap="toDetail" :data-id="index">
 				<view class="flex">
 					<view class="flex-sub padding-sm">
 						<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
@@ -33,17 +33,18 @@
 					</view>
 					
 					<view class="flex-treble padding-sm">
-						<view class="">产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}</view>
-						<view class="text-sm text-gray margin-tb-sm impleName">产品介绍产品介绍产品介绍产品介绍产品介绍产品介绍</view>
+						<view class="">{{ item.pTitle }}</view>
+						<view class="text-sm text-gray margin-tb-sm impleName">{{ item.pBrief }}</view>
 						<view class="text-sm text-gray justify-between flex align-center">
 							
 							<view>
 								<text class="text-lg" style="right: 0px;">
-									<text class="text-price text-red text-bold">80.00</text>
+									<text class="text-price text-red text-bold">{{ item.pSpecsList[0].sPrice}} </text>
+									<text class="text-red text-bold" v-if="item.pSpecsList.length > 1">-{{ item.pSpecsList[item.pSpecsList.length-1].sPrice}}</text>
 								</text>
 							</view>
 							<view>
-								<button class="cu-btn text-sm bg-black shadow-blur" @click.stop="addToCart"><text class="cuIcon-cart margin-right-xs"></text>加入购物车 </button>
+								<button class="cu-btn text-sm bg-black shadow-blur" @click.stop="addToCart" :data-id="index"><text class="cuIcon-cart margin-right-xs"></text>加入购物车 </button>
 							</view>
 						</view>
 					</view>
@@ -69,11 +70,11 @@
 							<scroll-view scroll-y style="height: 300px;">
 								<radio-group class="block" @change="radioChange">
 									<view class="cu-list menu text-left">
-										<view class="cu-item" v-for="(item,index) in 10" :key="index">
+										<view class="cu-item" v-for="(item,index) in productSpces" :key="index">
 											<label class="flex justify-between align-center flex-sub">
-												<view class="flex-sub">规格 {{index +1}}</view>
-												<radio class="" :class="radio=='radio' + index?'checked black':''" :checked="radio=='radio' + index?true:false"
-												 :value="'radio' + index"></radio>
+												<view class="flex-sub">{{ item.sName }}</view>
+												<radio class="" :class="radio==index?'checked black':''" :checked="radio==index?true:false"
+												 :value="index+''"></radio>
 											</label>
 										</view>
 									</view>
@@ -81,7 +82,7 @@
 							</scroll-view>
 						</view>
 						<view class="padding-lr text-red">
-							总价：<text class="text-price text-xl text-bold">1000.00</text>
+							价格：<text class="text-price text-xl text-bold">{{ 0==productSpces.length?0:productSpces[radio].sPrice }}</text>
 						</view>
 					</form>
 				</view>
@@ -103,6 +104,7 @@
 
 <script>
 	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
+	import product from '../../common/product'
 	export default {
 		components: {
 			uniNumberBox
@@ -114,32 +116,52 @@
 				scrollLeft: 0,
 				addToCartModel:false,
 				numberValue: 1,
-				radio: 'radio0',
+				radio: 0,
+				productTypeList:[],
+				productList:[],
+				productSpces:[]
 			}
 		},
+		created() {
+			var that = this;
+			product.selectAllProductType(that);
+			product.selectAllProduct(that);
+		},
 		methods: {
-			toDetail(){
+			toDetail(e){
+				var index = e.currentTarget.dataset.id;
+				
 				uni.navigateTo({
-					url:"../product/product-detail"
+					url:"../product/product-detail?pId="+this.productList[index].pId
 				})
 			},
 			tabSelect(e) {
+				var that = this;
 				this.TabCur = e.currentTarget.dataset.id;
+				product.selectAllProduct(that,this.TabCur);
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 			},
-			addToCart(){
+			addToCart(e){
+				
+				var index = e.currentTarget.dataset.id;
+				this.productSpces = this.productList[index].pSpecsList;
 				this.addToCartModel = true;
+				
 			},
 			closeAddToCartModel(){
+				this.productSpces = [];
 				this.addToCartModel = false;
 			},
 			commitAddToCart(){
 				this.addToCartModel = false;
+				this.productSpces = [];
 				uni.showToast({
 					title:"已添加购物车"
 				})
 			},
 			radioChange(e) {
+				
+				
 				this.radio = e.detail.value
 			},
 			change(event) {

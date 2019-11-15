@@ -52,7 +52,7 @@
 	export default {
 		data() {
 			return {
-				
+				alert:false
 			}
 		},
 		computed:{
@@ -65,10 +65,6 @@
 		},
 		methods: {
 			login(){
-				uni.showLoading({
-					title:"登录中...",
-					mask:true
-				})
 				login.mplogin();
 			}
 		}

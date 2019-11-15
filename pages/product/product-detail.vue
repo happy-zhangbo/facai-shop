@@ -13,15 +13,15 @@
 		</swiper>
 		<view class="flex bg-white solid-bottom">
 			<view class="flex-treble padding-sm">
-				<view class="text-bold text-black">产品title产品title产品title产品title产品title产品title产品title产品title产品title</view>
-				<view class="text-sm text-gray margin-tb-sm">介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</view>
-				<view class="text-sm text-gray text-left">
+				<view class="text-bold text-black">{{ productDetail.pTitle}}</view>
+				<view class="text-sm text-gray margin-tb-sm">{{ productDetail.pBrief}}</view>
+				<!-- <view class="text-sm text-gray text-left">
 					<view>
 						<text class="text-lg " style="right: 0px;">
-							<text class="text-price text-red text-bold">80.00 / 个</text>
+							<text class="text-price text-red text-bold">{{ productDetail.pSpecsList[0].sPrice }}</text>
 						</text>
 					</view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<scroll-view scroll-x class="nav text-center bg-white text-gray">
@@ -30,16 +30,22 @@
 			</view>
 		</scroll-view>
 		<view class="padding-xl" v-if="TabCur==0">
-			asdadasdasdasdasd
+			{{ productDetail.pDetail}}
 		</view>
 		<view class="padding-xl" v-if="TabCur==1">
-			123123123123123123
+			<text v-for="(item,index) in productDetail.pSpecsList" :key="index">
+				{{ item.sName }}、
+				
+			</text>
 		</view>
 		
 		
 		
 		<view class="cu-bar bg-white tabbar shop foot justify-between">
-			<view class="padding-left"><text class="text-price text-red">1000.00</text></view>
+			<view class="padding-left">
+				价格：<text class="text-price text-red text-bold text-lg">{{ productDetail.pSpecsList[0].sPrice }}</text>
+				<text class="text-red text-bold text-lg" v-if="productDetail.pSpecsList.length > 1">-{{ productDetail.pSpecsList[productDetail.pSpecsList.length-1].sPrice}}</text>
+			</view>
 			<view class="padding-right">
 				<button class="cu-btn bg-black round shadow-blur" @tap="addToCart"><text class="cuIcon-cart margin-right-xs"></text>加入购物车</button>
 			</view>
@@ -64,11 +70,11 @@
 							<scroll-view scroll-y style="height: 300px;">
 								<radio-group class="block" @change="radioChange">
 									<view class="cu-list menu text-left">
-										<view class="cu-item" v-for="(item,index) in 5" :key="index">
+										<view class="cu-item" v-for="(item,index) in productDetail.pSpecsList" :key="index">
 											<label class="flex justify-between align-center flex-sub">
-												<view class="flex-sub">规格 {{index +1}}</view>
-												<radio class="" :class="radio=='radio' + index?'checked black':''" :checked="radio=='radio' + index?true:false"
-												 :value="'radio' + index"></radio>
+												<view class="flex-sub">{{ item.sName }}</view>
+												<radio class="" :class="radio==index?'checked black':''" :checked="radio==index?true:false"
+												 :value="index+''"></radio>
 											</label>
 										</view>
 									</view>
@@ -76,7 +82,7 @@
 							</scroll-view>
 						</view>
 						<view class="padding-lr text-red">
-							总价：<text class="text-price text-xl text-bold">1000.00</text>
+							总价：<text class="text-price text-xl text-bold">{{ productDetail.pSpecsList[radio].sPrice }}</text>
 						</view>
 					</form>
 				</view>
@@ -91,6 +97,7 @@
 
 <script>
 	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
+	import product from '../../common/product'
 	export default {
 		components: {
 			uniNumberBox
@@ -99,8 +106,11 @@
 			return {
 				addToCartModel:false,
 				numberValue: 1,
-				radio: 'radio0',
+				radio: 0,
 				TabCur: 0,
+				productDetail:{
+					pSpecsList:[{sPrice:0}]
+				},
 				orderState:[{
 					name:"商品介绍"
 				},{
@@ -137,8 +147,12 @@
 				}],
 			}
 		},
+		onLoad(e) {
+			var that = this;
+			product.selectProductDetail(that,e.pId)
+		},
 		methods: {
-			addToCart(){
+			addToCart(e){
 				this.addToCartModel = true;
 			},
 			closeAddToCartModel(){
