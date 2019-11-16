@@ -105,6 +105,11 @@
 <script>
 	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
 	import product from '../../common/product'
+	import login from '../../common/login.js'
+	import {
+	  mapState,
+	  mapMutations
+	 } from 'vuex';
 	export default {
 		components: {
 			uniNumberBox
@@ -121,6 +126,9 @@
 				productList:[],
 				productSpces:[]
 			}
+		},
+		computed:{
+		   ...mapState(['hasLogin','userInfo'])
 		},
 		created() {
 			var that = this;
@@ -153,11 +161,23 @@
 				this.addToCartModel = false;
 			},
 			commitAddToCart(){
-				this.addToCartModel = false;
-				this.productSpces = [];
-				uni.showToast({
-					title:"已添加购物车"
-				})
+				if(this.hasLogin){
+					this.addToCartModel = false;
+					this.productSpces = [];
+					uni.showToast({
+						title:"已添加购物车"
+					})
+				}else{
+					this.addToCartModel = false;
+					uni.showToast({
+						title:"您还未登录",
+						icon:"none",
+						success:function(){
+							login.mplogin();
+						}
+					});
+				}
+				
 			},
 			radioChange(e) {
 				

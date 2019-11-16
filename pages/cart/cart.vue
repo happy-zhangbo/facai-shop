@@ -8,47 +8,59 @@
 				<!-- last-child选择器-->
 			</view>
 		</view>
-		<checkbox-group class="block" @change="CheckboxChange"  style="margin-top: 55px;">
-			<view class="cu-list bg-white">
-				<uni-swipe-action :options="options1" @click="bindClick" v-for="(item,index) in cartList" :key="index">
-					<view class="cu-item solid-bottom">
-						<view class="flex">
-							<view class="padding-left flex align-center"><checkbox :class="item.checked?'checked black':''" :checked="item.checked" :value="index+''"></checkbox></view>
-							<view class="flex-sub padding-sm">
-								<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
-								 mode="aspectFill" style="width: 100%;height: 115px;" class="radius"></image>
-							</view>
-							<view class="flex-treble padding-sm">
-								<view>产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}</view>
-								<view class="text-sm text-gray margin-tb-sm impleName">规格配置</view>
-								<view class="text-sm text-gray flex justify-between align-center">
-									<uni-number-box :value="item.numberValue" @change="change" :ids="index+''" />
-									<view>
-										<text class="text-lg" style="right: 0px;">
-											<text class="text-price text-red text-bold">80.00</text>
-										</text>
+		<view class="text-center" style="margin-top: 55px;" v-if="!hasLogin">
+			<view class=" padding-tb-xl text-grey">您还未登录</view>
+			<button class="cu-btn round bg-black" @tap="login">去登录</button>
+		</view>
+		<view v-if="hasLogin">
+			<view class="text-center" style="margin-top: 55px;" v-if="0 == cartList.length">
+				<view class=" padding-tb-xl text-grey">您的购物车空空如也</view>
+				<button class="cu-btn round bg-black" @tap="toIndex">去购物</button>
+			</view>
+			<view v-if="0 != cartList.length">
+				<checkbox-group class="block" @change="CheckboxChange"  style="margin-top: 55px;">
+					<view class="cu-list bg-white">
+						<uni-swipe-action :options="options1" @click="bindClick" v-for="(item,index) in cartList" :key="index">
+							<view class="cu-item solid-bottom">
+								<view class="flex">
+									<view class="padding-left flex align-center"><checkbox :class="item.checked?'checked black':''" :checked="item.checked" :value="index+''"></checkbox></view>
+									<view class="flex-sub padding-sm">
+										<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
+										 mode="aspectFill" style="width: 100%;height: 115px;" class="radius"></image>
+									</view>
+									<view class="flex-treble padding-sm">
+										<view>产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}</view>
+										<view class="text-sm text-gray margin-tb-sm impleName">规格配置</view>
+										<view class="text-sm text-gray flex justify-between align-center">
+											<uni-number-box :value="item.numberValue" @change="change" :ids="index+''" />
+											<view>
+												<text class="text-lg" style="right: 0px;">
+													<text class="text-price text-red text-bold">80.00</text>
+												</text>
+											</view>
+										</view>
 									</view>
 								</view>
+								
 							</view>
-						</view>
-						
+						</uni-swipe-action>
 					</view>
-				</uni-swipe-action>
-			</view>
-		</checkbox-group>
-		<view class="cu-bar bg-white tabbar shop" style="width: 100%;bottom:calc(100upx + env(safe-area-inset-bottom) / 2);position: fixed;">
-			<view class="margin-lr">
-				<checkbox-group class="block" @change="checkAll">
-					<checkbox class="margin-right-xs" :class="selectAll?'checked black':''" :checked="selectAll"></checkbox>
-					全选
 				</checkbox-group>
+				<view class="cu-bar bg-white tabbar shop" style="width: 100%;bottom:calc(100upx + env(safe-area-inset-bottom) / 2);position: fixed;">
+					<view class="margin-lr">
+						<checkbox-group class="block" @change="checkAll">
+							<checkbox class="margin-right-xs" :class="selectAll?'checked black':''" :checked="selectAll"></checkbox>
+							全选
+						</checkbox-group>
+					</view>
+					
+					<view class="margin-lr">
+						合计：<text class="text-price text-red margin-right">1000.00</text>
+						<button class="cu-btn bg-red round shadow-blur" @tap="toPreview">立即订购</button>
+					</view>
+					
+				</view>
 			</view>
-			
-			<view class="margin-lr">
-				合计：<text class="text-price text-red margin-right">1000.00</text>
-				<button class="cu-btn bg-red round shadow-blur" @tap="toPreview">立即订购</button>
-			</view>
-			
 		</view>
 		<view class="cu-tabbar-height"></view>
 		<view class="cu-tabbar-height"></view>
@@ -58,6 +70,11 @@
 <script>
 	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
 	import uniSwipeAction from '@/components/uni-swipe-action/uni-swipe-action.vue'
+	import login from '../../common/login.js'
+	import {
+	  mapState,
+	  mapMutations
+	 } from 'vuex';
 	export default {
 		components: {
 			uniNumberBox,
@@ -67,16 +84,7 @@
 			return {
 				CustomBar: this.CustomBar,
 				modalName: null,
-				cartList:[{
-					checked:false,
-					numberValue: 1
-				},{
-					checked:false,
-					numberValue: 1
-				},{
-					checked:false,
-					numberValue: 1
-				}],
+				cartList:[],
 				selectAll:false,
 				isOpened: false,
 				options1: [{
@@ -87,7 +95,18 @@
 				}]
 			}
 		},
+		computed:{
+		   ...mapState(['hasLogin','userInfo'])
+		},
 		methods: {
+			login(){
+				login.mplogin();
+			},
+			toIndex(){
+				uni.reLaunch({
+					url:"/pages/index/index"
+				})
+			},
 			toPreview(){
 				uni.navigateTo({
 					url:"../cart/preview"

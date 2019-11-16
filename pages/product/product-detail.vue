@@ -98,6 +98,11 @@
 <script>
 	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
 	import product from '../../common/product'
+	import login from '../../common/login.js'
+	import {
+	  mapState,
+	  mapMutations
+	 } from 'vuex';
 	export default {
 		components: {
 			uniNumberBox
@@ -147,6 +152,9 @@
 				}],
 			}
 		},
+		computed:{
+		   ...mapState(['hasLogin','userInfo'])
+		},
 		onLoad(e) {
 			var that = this;
 			product.selectProductDetail(that,e.pId)
@@ -167,7 +175,26 @@
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-			}
+			},
+			commitAddToCart(){
+				if(this.hasLogin){
+					this.addToCartModel = false;
+					this.productSpces = [];
+					uni.showToast({
+						title:"已添加购物车"
+					})
+				}else{
+					this.addToCartModel = false;
+					uni.showToast({
+						title:"您还未登录",
+						icon:"none",
+						success:function(){
+							login.mplogin();
+						}
+					});
+				}
+				
+			},
 		}
 	}
 </script>
