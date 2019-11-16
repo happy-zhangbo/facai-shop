@@ -41,7 +41,8 @@ const post = function(url,param,contentType,callback){
 			console.log(res);
 			uni.hideLoading();
 			uni.showToast({
-				title:"错误请求"
+				title:"错误请求",
+				icon:"none"
 			});
 		}
 		
