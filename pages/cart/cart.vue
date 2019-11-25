@@ -18,30 +18,31 @@
 				<button class="cu-btn round bg-black" @tap="toIndex">去购物</button>
 			</view>
 			<view v-if="0 != cartList.length">
-				<checkbox-group class="block" @change="CheckboxChange"  style="margin-top: 55px;">
+				<checkbox-group class="block" @change="CheckboxChange" style="margin-top: 55px;">
 					<view class="cu-list bg-white">
-						<uni-swipe-action :options="options1" @click="bindClick" v-for="(item,index) in cartList" :key="index">
+						<uni-swipe-action :options="options" @click="bindClick($event,index)" :data-index="index" v-for="(item,index) in cartList" :key="index">
 							<view class="cu-item solid-bottom">
 								<view class="flex">
 									<view class="padding-left flex align-center"><checkbox :class="item.checked?'checked black':''" :checked="item.checked" :value="index+''"></checkbox></view>
 									<view class="flex-sub padding-sm">
 										<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
 										 mode="aspectFill" style="width: 100%;height: 115px;" class="radius"></image>
-									</view>
+									</view> <!-- #ifdef APP-PLUS -->
+									
+									<!-- #endif -->
 									<view class="flex-treble padding-sm">
-										<view>产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}</view>
-										<view class="text-sm text-gray margin-tb-sm impleName">规格配置</view>
+										<view>{{ item.productSpecs.product.pTitle }}</view>
+										<view class="text-sm text-gray margin-tb-sm impleName">{{ item.productSpecs.sName }}</view>
 										<view class="text-sm text-gray flex justify-between align-center">
-											<uni-number-box :value="item.numberValue" @change="change" :ids="index+''" />
+											<uni-number-box :value="item.cCount" @change="change" :ids="index+''" />
 											<view>
 												<text class="text-lg" style="right: 0px;">
-													<text class="text-price text-red text-bold">80.00</text>
+													<text class="text-price text-red text-bold">{{ item.cTotal }}</text>
 												</text>
 											</view>
 										</view>
 									</view>
 								</view>
-								
 							</view>
 						</uni-swipe-action>
 					</view>
@@ -55,10 +56,27 @@
 					</view>
 					
 					<view class="margin-lr">
-						合计：<text class="text-price text-red margin-right">1000.00</text>
+						合计：<text class="text-price text-red margin-right text-bold">{{ zongjia }}</text>
 						<button class="cu-btn bg-red round shadow-blur" @tap="toPreview">立即订购</button>
 					</view>
 					
+				</view>
+			</view>
+		</view>
+		<view class="cu-modal" :class="confirmDelModel?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">确认删除</view>
+					<view class="action" @tap="hiddenModel">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+				<view class="padding-xl">
+					您确认删除购物车中的商品吗？
+				</view>
+				<view class="cu-bar bg-white">
+					<view class="action margin-0 flex-sub solid-left" @tap="hiddenModel">取消</view>
+					<view class="action margin-0 flex-sub solid-left text-red" @tap="commitDel">确定</view>
 				</view>
 			</view>
 		</view>
@@ -68,9 +86,10 @@
 </template>
 
 <script>
+	import carts from '../../common/cart.js'
+	import login from '../../common/login.js'
 	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
 	import uniSwipeAction from '@/components/uni-swipe-action/uni-swipe-action.vue'
-	import login from '../../common/login.js'
 	import {
 	  mapState,
 	  mapMutations
@@ -87,20 +106,36 @@
 				cartList:[],
 				selectAll:false,
 				isOpened: false,
-				options1: [{
+				zongjia:0.00,
+				options: [{
 					text: '删除',
 					style: {
 						backgroundColor: 'red'
 					}
-				}]
+				}],
+				confirmDelModel:false,
+				delIndex:0
 			}
 		},
 		computed:{
 		   ...mapState(['hasLogin','userInfo'])
 		},
+		created() {
+			var that = this;
+			if(this.hasLogin){
+				carts.selectCarts(that);
+			}
+			
+			
+		},
 		methods: {
 			login(){
-				login.mplogin();
+				var that = this;
+				login.mplogin(function(res){
+					console.log("carts："+res)
+					carts.selectCarts(that);
+				});
+				
 			},
 			toIndex(){
 				uni.reLaunch({
@@ -108,14 +143,47 @@
 				})
 			},
 			toPreview(){
-				uni.navigateTo({
-					url:"../cart/preview"
+				if(this.zongjia == 0.00){
+					uni.showToast({
+						title:"请选择一件商品",
+						icon:"none"
+					})
+					return;
+				}
+				uni.showLoading({
+					title:"请稍等"
 				})
+				var checkedProduct = []
+				for(var i = 0;i < this.cartList.length; i++){
+					if(this.cartList[i].checked){
+						checkedProduct.push(this.cartList[i])
+					}
+				}
+				uni.navigateTo({
+					url:"../cart/preview?cartProduct="+JSON.stringify(checkedProduct),
+				})
+				
 			},
 			change(event) {
 				var items = this.cartList,
 					ids = event.ids;
+				
 				items[ids].numberValue = event.value;
+				if(items[ids].numberValue == 0){
+					items[ids].numberValue = 1;
+				}
+				
+				console.log(items[ids].numberValue);
+				items[ids].cTotal = items[ids].numberValue * items[ids].productSpecs.sPrice;
+				var zongjia = 0.00;
+				for(var i = 0;i < this.cartList.length; i++){
+					if(this.cartList[i].checked){
+						zongjia += this.cartList[i].cTotal;
+					}
+				}
+				this.zongjia = zongjia;
+				
+				
 					
 			},
 			checkAll(){
@@ -124,36 +192,53 @@
 					//循环遍历修改购物车标识为未选中
 					for(var i = 0;i < this.cartList.length; i++){
 						this.cartList[i].checked = false
+						this.zongjia = 0.00;
 					}
 				}else{
 					this.selectAll = true;
+					var zongjia = 0.00;
 					//循环遍历修改购物车标识为选中
 					for(var i = 0;i < this.cartList.length; i++){
 						this.cartList[i].checked = true;
+						zongjia += this.cartList[i].cTotal;
 					}
+					this.zongjia = zongjia;
 					
 				}
 			},
 			CheckboxChange(e) {
 				var items = this.cartList,
-					values = e.detail.value;
-
+					values = e.detail.value,
+					zongjia = 0.00;
+				console.log(values);
+				console.log(items);
 				for (var i = 0, lenI = items.length; i < lenI; ++i) {
 					items[i].checked = false;
 					for (var j = 0, lenJ = values.length; j < lenJ; ++j) {
 						if (i == values[j]) {
 							items[i].checked = true;
+							zongjia += items[i].cTotal;
 							break
 						}
 					}
 				}
+				
+				this.zongjia = zongjia;
+				this.cartList = items;
 			},
-			bindClick(e) {
-				console.log(e)
-				uni.showToast({
-					title: `点击了${e.content.text}按钮`,
-					icon: 'none'
-				})
+			bindClick(e,index) {
+				this.confirmDelModel = true;
+				this.delIndex = index;
+			},
+			commitDel(){
+				console.log(this.delIndex);
+				var that = this;
+				
+				carts.deleteCarts(that,this.delIndex);
+			},
+			hiddenModel(){
+				this.confirmDelModel = false;
+				this.delIndex = 0;
 			}
 		}
 	}
@@ -176,7 +261,7 @@
 		display: flex;
 		flex-direction: column;
 		box-sizing: border-box;
-		background-color: #efeff4;
+/* 		background-color: #ffffff; */
 		min-height: 100%;
 		height: auto;
 	}

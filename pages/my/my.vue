@@ -21,7 +21,7 @@
 				</navigator>
 			</view>
 			<view class="cu-item arrow">
-				<navigator class="content" hover-class="none" url="/pages/my/order" open-type="navigate">
+				<navigator class="content" hover-class="none" url="/pages/my/address" open-type="navigate">
 					<text class="cuIcon-locationfill text-black"></text>
 					<text class="text-grey">地址</text>
 				</navigator>

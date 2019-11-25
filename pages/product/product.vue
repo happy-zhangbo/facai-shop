@@ -82,7 +82,7 @@
 							</scroll-view>
 						</view>
 						<view class="padding-lr text-red">
-							价格：<text class="text-price text-xl text-bold">{{ 0==productSpces.length?0:productSpces[radio].sPrice }}</text>
+							价格：<text class="text-price text-xl text-bold">{{ 0==productSpces.length?0:productSpces[radio].sPrice*numberValue }}</text>
 						</view>
 					</form>
 				</view>
@@ -154,21 +154,27 @@
 				var index = e.currentTarget.dataset.id;
 				this.productSpces = this.productList[index].pSpecsList;
 				this.addToCartModel = true;
-				
 			},
 			closeAddToCartModel(){
 				this.productSpces = [];
 				this.addToCartModel = false;
+				this.numberValue = 1;
 			},
 			commitAddToCart(){
+				console.log(this.radio);
 				if(this.hasLogin){
+					product.addToCarts(this.productSpces[this.radio],this.numberValue)					
+					
 					this.addToCartModel = false;
 					this.productSpces = [];
+					this.numberValue = 1;
 					uni.showToast({
 						title:"已添加购物车"
 					})
 				}else{
 					this.addToCartModel = false;
+					this.productSpces = [];
+					this.numberValue = 1;
 					uni.showToast({
 						title:"您还未登录",
 						icon:"none",
@@ -180,8 +186,6 @@
 				
 			},
 			radioChange(e) {
-				
-				
 				this.radio = e.detail.value
 			},
 			change(event) {

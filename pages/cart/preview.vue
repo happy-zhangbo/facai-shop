@@ -12,7 +12,6 @@
 							<text class="cuIcon cuIcon-locationfill text-white"></text>
 						</view>
 					</view>
-					
 					<view class="basis-xl padding">
 						<view class="text-lg">张博<text class="margin-left-sm text-df text-grey">18010091016</text></view>
 						<view class="text-df">北京北京市大兴区新华小区5单元607</view>
@@ -59,22 +58,17 @@
 			</view>
 		</form>
 		<view class="cu-list menu margin-bottom-sm" style="margin-top: 0px;">
-			<view class="cu-item" v-for="(item,index) in 5" :key="index">
-				<view class="flex">
-					<view class="flex-sub padding-tb-sm">
-						<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
-						 mode="aspectFill" style="width: 100%;height: 115px;" class="radius"></image>
-					</view>
-					
-					<view class="flex-treble padding-sm">
-						<view class="">产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}产品title{{ index }}</view>
+			<view class="bg-white solid-bottom" v-for="(item,index) in cartProduct" :key="index">
+				<view class="flex justify-between align-center">
+					<view class="padding">
+						<view class="text-black">{{ item.productSpecs.product.pTitle }}</view>
 						<view class="text-sm text-gray margin-tb-sm">
-							<view>数量：100个;</view>
-							<view>规格：3*3 白色</view>
+							<view>数量：{{ item.cCount }};</view>
+							<view>规格：{{ item.productSpecs.sName }};</view>
 						</view>
 					</view>
-					<view class="flex-sub flex justify-center align-center">
-						<text class="text-price text-bold">80.00</text>
+					<view class="padding-right-xl text-black">
+						<text class="text-price text-bold">{{ item.cTotal }}</text>
 					</view>
 				</view>
 			</view>
@@ -87,7 +81,7 @@
 		<view class="cu-bar bg-white tabbar foot shop justify-end">
 			<view class="margin-lr text-black">
 				<text>共 3 件，</text>
-				<text>合计：<text class="text-price text-red margin-right">1000.00</text></text>
+				<text>合计：<text class="text-price text-red margin-right">{{ zongjia }}</text></text>
 				<button class="cu-btn bg-red round shadow-blur" @tap="toPreview">提交订单</button>
 			</view>
 		</view>
@@ -99,6 +93,7 @@
 
 <script>
 	import wPicker from "@/components/w-picker/w-picker.vue";
+	import carts from '../../common/cart.js'
 	export default {
 		components:{
 			wPicker
@@ -112,19 +107,21 @@
 				selectList:[{
 					label:"在线支付",
 					value:0
-				},{
-					label:"货到付款",
-					value:1
-				},{
-					label:"签字付款",
-					value:2
-				},{
-					label:"现金支付",
-					value:3
 				}],
+				cartProduct:[],
+				zongjia:0.00,
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+			var cartProduct = JSON.parse(e.cartProduct);
+			var that = this;
+			that.cartProduct = cartProduct;
+			var zongjia = 0.00;
+			//循环遍历修改购物车标识为选中
+			for(var i = 0;i < that.cartProduct.length; i++){
+				zongjia += that.cartProduct[i].cTotal;
+			}
+			that.zongjia = zongjia;
 			
 		},
 		methods: {
@@ -149,8 +146,6 @@
 						that.$req.get("https://restapi.amap.com/v3/geocode/regeo",param,function(res){
 							console.log(res);
 						})
-						
-						
 					},
 					fail(res) {
 						console.log(res);

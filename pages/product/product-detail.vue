@@ -82,7 +82,7 @@
 							</scroll-view>
 						</view>
 						<view class="padding-lr text-red">
-							总价：<text class="text-price text-xl text-bold">{{ productDetail.pSpecsList[radio].sPrice }}</text>
+							总价：<text class="text-price text-xl text-bold">{{ productDetail.pSpecsList[radio].sPrice*numberValue }}</text>
 						</view>
 					</form>
 				</view>
@@ -178,8 +178,8 @@
 			},
 			commitAddToCart(){
 				if(this.hasLogin){
+					product.addToCarts(this.productDetail.pSpecsList[this.radio],this.numberValue)		
 					this.addToCartModel = false;
-					this.productSpces = [];
 					uni.showToast({
 						title:"已添加购物车"
 					})
