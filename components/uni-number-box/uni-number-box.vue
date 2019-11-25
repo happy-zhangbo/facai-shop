@@ -15,11 +15,11 @@
 			},
 			min: {
 				type: Number,
-				default: 0
+				default: 1
 			},
 			max: {
 				type: Number,
-				default: 100
+				default: 9999
 			},
 			step: {
 				type: Number,
