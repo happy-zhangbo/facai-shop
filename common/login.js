@@ -1,6 +1,6 @@
 import store from '../store'
 import req from './req'
-const mplogin = function(){	
+const mplogin = function(callback){	
 	uni.login({
 		provider: 'weixin',
 		success: function (loginRes) {
@@ -20,6 +20,9 @@ const mplogin = function(){
 						uni.showToast({
 							title:"登录成功"
 						})
+						if(callback){
+							callback(res);
+						}
 					})
 				}
 			});
