@@ -26,7 +26,18 @@ const deleteCarts = function(that,index){
 	})
 }
 
+const getDefaultAddress = function(that){
+	req.get("userinfo/address/select_defaultAddress",{},function(res){
+		console.log("查询默认地址:");
+		console.log(res);
+		var data = res.data.data;
+		console.log(data);
+		that.addressInfo = data;
+	})
+}
+
 export default{
 	selectCarts,
-	deleteCarts
+	deleteCarts,
+	getDefaultAddress
 }
