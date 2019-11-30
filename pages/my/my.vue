@@ -15,16 +15,16 @@
 		</view>
 		<view class="cu-list menu margin-top-xl card-menu ">
 			<view class="cu-item arrow">
-				<navigator class="content" hover-class="none" url="/pages/my/order" open-type="navigate">
+				<view class="content" @tap="toOrder">
 					<text class="cuIcon-selectionfill text-black"></text>
 					<text class="text-grey">订单</text>
-				</navigator>
+				</view>
 			</view>
 			<view class="cu-item arrow">
-				<navigator class="content" hover-class="none" url="/pages/my/address" open-type="navigate">
+				<view class="content" @tap="toAddress">
 					<text class="cuIcon-locationfill text-black"></text>
 					<text class="text-grey">地址</text>
-				</navigator>
+				</view>
 			</view>
 			<view class="cu-item">
 				<navigator class="content" hover-class="none" url="../list/list" open-type="navigate">
@@ -66,6 +66,34 @@
 		methods: {
 			login(){
 				login.mplogin();
+			},
+			toOrder(){
+				if(this.hasLogin){
+					uni.navigateTo({
+						url:"/pages/my/order"
+					})
+				}else{
+					uni.showToast({
+						title:"请先登录",
+						icon:"none"
+						
+					})
+				}
+				
+				
+			},
+			toAddress(){
+				if(this.hasLogin){
+					uni.navigateTo({
+						url:"/pages/my/address"
+					})
+				}else{
+					uni.showToast({
+						title:"请先登录",
+						icon:"none"
+					})
+				}
+				
 			}
 		}
 	}

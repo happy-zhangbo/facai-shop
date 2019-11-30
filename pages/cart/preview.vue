@@ -5,16 +5,20 @@
 			<block slot="content">确认订单</block>
 		</cu-custom>
 		<view class="cu-list menu margin-bottom-sm shadow-blur" style="border-bottom:10px transparent solid;border-image:linear-gradient(to left,#000,red) 1 10;">
-			<view class="cu-item arrow">
-				<view class="flex flex-wrap">
-					<view class="basis-xs align-center justify-center flex">
+			<view class="cu-item arrow" @tap="toAddress">
+				<view class="flex flex-wrap" >
+					<view class="flex-sub align-center justify-center flex">
 						<view class="cu-avatar lg round bg-red">
 							<text class="cuIcon cuIcon-locationfill text-white"></text>
 						</view>
 					</view>
-					<view class="basis-xl padding">
-						<view class="text-lg">张博<text class="margin-left-sm text-df text-grey">18010091016</text></view>
-						<view class="text-df">北京北京市大兴区新华小区5单元607</view>
+					<view class="flex-treble padding" v-if="addressInfo != null">
+						<view class="text-lg margin-bottom-sm">{{addressInfo.aLink}}<text class="margin-left-sm text-df text-grey">{{addressInfo.aTel}}</text></view>
+						<view class="text-df">{{addressInfo.aCity}}{{addressInfo.aAddress}}</view>
+					</view>
+					<view class="flex-treble padding" v-if="addressInfo == null">
+						<view class="text-lg margin-bottom-sm">姓名<text class="margin-left-sm text-df text-grey">联系方式</text></view>
+						<view class="text-df">暂无默认地址</view>
 					</view>
 				</view>
 			</view>
@@ -110,6 +114,7 @@
 				}],
 				cartProduct:[],
 				zongjia:0.00,
+				addressInfo:null,
 			}
 		},
 		onLoad(e) {
@@ -123,6 +128,17 @@
 			}
 			that.zongjia = zongjia;
 			
+			carts.getDefaultAddress(that);
+			
+		},
+		onShow(e) {
+			let pages = getCurrentPages();
+			let currPage = pages[pages.length-1];
+			if(currPage.data.addressInfo==undefined){
+				
+			}else{
+				this.addressInfo = currPage.data.addressInfo
+			}
 		},
 		methods: {
 			PayMethodChange(val) {
@@ -158,6 +174,11 @@
 			},
 			onConfirm(val){
 				this.resultInfo=val;
+			},
+			toAddress(){
+				uni.navigateTo({
+					url:"/pages/cart/address"
+				})
 			}
 		}
 	}

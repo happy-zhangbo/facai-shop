@@ -150,9 +150,6 @@
 					})
 					return;
 				}
-				uni.showLoading({
-					title:"请稍等"
-				})
 				var checkedProduct = []
 				for(var i = 0;i < this.cartList.length; i++){
 					if(this.cartList[i].checked){

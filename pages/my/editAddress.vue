@@ -14,11 +14,11 @@
 		<form @submit="commit">
 			<view class="cu-form-group" style="margin-top: 55px;">
 				<view class="title">联系人</view>
-				<input class="text-right" placeholder="联系人" name="aLink"></input>
+				<input class="text-right" placeholder="联系人" name="aLink" :value="addressInfo.aLink"></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">联系电话</view>
-				<input class="text-right" placeholder="联系电话" name="aTel"></input>
+				<input class="text-right" placeholder="联系电话" name="aTel" :value="addressInfo.aTel"></input>
 			</view>
 			<view class="cu-list menu solid-bottom">
 				<view class="cu-item arrow" @tap="toggleTab('region',0)">
@@ -26,7 +26,7 @@
 						<text class="">选择地址</text>
 					</view>
 					<view class="action">
-						<text class="impleName text-bold">{{ addressPicker }}</text>
+						<text class="impleName text-bold">{{ addressInfo.aCity }}</text>
 					</view>
 				</view>
 				<w-picker
@@ -39,11 +39,11 @@
 				></w-picker>
 			</view>
 			<view class="cu-form-group">
-				<textarea maxlength="-1" @input="textareaAInput" placeholder="详细地址"></textarea>
+				<textarea maxlength="-1" @input="textareaAInput" placeholder="详细地址" 	:value="addressInfo.aAddress"></textarea>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">是否默认</view>
-				<switch @change="SwitchA" :class="switchA?'checked red':''" :checked="switchA?true:false" name="aDefatult"></switch>
+				<switch @change="SwitchA" :class="switchA?'checked red':''" :checked="addressInfo.aDefatult==1?true:false" name="aDefatult"></switch>
 			</view>
 			<view class="padding flex flex-direction">
 				<button class="cu-btn bg-red margin-tb-sm lg" form-type="submit">提交</button>
@@ -63,32 +63,33 @@
 		data() {
 			return {
 				CustomBar: this.CustomBar,
-				textareaAddress:"",
-				addressPicker:"北京市市辖区东城区",
-				switchA: false
+				addressInfo:{},
 			}
+		},
+		onLoad(e){
+			var addressInfo = JSON.parse(e.addressInfo);
+			this.addressInfo = addressInfo;
 		},
 		methods: {
 			textareaAInput(e){
-				this.textareaAddress = e.detail.value;
+				this.addressInfo.aAddress = e.detail.value;
 			},
 			toggleTab(item,index){
 				this.$refs[item].show();
 			},
 			SwitchA(e) {
-				this.switchA = e.detail.value
+				this.addressInfo.aDefatult = e.detail.value?1:0
 			},
 			onConfirm(val){
 				console.log(val);
-				this.addressPicker=val.result;
+				this.addressInfo.aCity=val.result;
 			},
 			commit(e){
 				var formData = e.detail.value;
-				formData.aAddress = this.textareaAddress;
-				formData.aCity = this.addressPicker;
-				formData.aDefatult = formData.aDefatult?1:0
-				 console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
-				 address.insertAddress(formData)
+				this.addressInfo.aLink= formData.aLink
+				this.addressInfo.aTel= formData.aTel
+				 console.log('form发生了submit事件，携带数据为：' + JSON.stringify(this.addressInfo))
+				 address.updateAddress(this.addressInfo)
 			}
 		}
 	}
