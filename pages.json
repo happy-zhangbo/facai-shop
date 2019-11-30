@@ -134,7 +134,15 @@
 		    "style" : {}
 		}
 		,{
+		    "path" : "pages/my/editAddress",
+		    "style" : {}
+		}
+		,{
 			"path":"pages/cart/preview",
+			"style":{}
+		}
+		,{
+			"path":"pages/cart/address",
 			"style":{}
 		}
     ],
@@ -158,10 +166,15 @@
 				"query": "" //启动参数
 			},
 			{
-					"name": "确认订单", //模式名称
-					"path": "pages/cart/preview", //启动页面
-					"query": "" //启动参数
-				}
+				"name": "确认订单", //模式名称
+				"path": "pages/cart/preview", //启动页面
+				"query": "" //启动参数
+			},
+			{
+				"name": "添加地址", //模式名称
+				"path": "pages/my/addAddress", //启动页面
+				"query": "" //启动参数
+			}
 		]
 	}
 
