@@ -36,8 +36,15 @@ const getDefaultAddress = function(that){
 	})
 }
 
+const pay(that){
+	var param = {"oPaymethod":1,"oType":that.,"o_remarks":"","o_address":""}
+	
+	
+}
+
 export default{
 	selectCarts,
 	deleteCarts,
-	getDefaultAddress
+	getDefaultAddress,
+	pay
 }
