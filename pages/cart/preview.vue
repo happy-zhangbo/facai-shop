@@ -173,6 +173,7 @@
 				this.$refs[item].show();
 			},
 			onConfirm(val){
+				console.log(val);
 				this.resultInfo=val;
 			},
 			toAddress(){
