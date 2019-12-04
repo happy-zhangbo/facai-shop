@@ -145,6 +145,10 @@
 			"path":"pages/cart/address",
 			"style":{}
 		}
+		,{
+			"path":"pages/cart/pay",
+			"style":{}
+		}
     ],
 	"globalStyle": {
 		"mp-alipay": {
