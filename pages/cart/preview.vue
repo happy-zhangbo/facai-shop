@@ -180,6 +180,9 @@
 				uni.navigateTo({
 					url:"/pages/cart/address"
 				})
+			},
+			commit(){
+				
 			}
 		}
 	}
