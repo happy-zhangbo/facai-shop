@@ -36,15 +36,36 @@ const getDefaultAddress = function(that){
 	})
 }
 
-const pay(that){
-	var param = {"oPaymethod":1,"oType":that.,"o_remarks":"","o_address":""}
-	
-	
+const commitOrder = function(that){
+	console.log(that.cartProduct)
+	var address = that.addressInfo.aCity+that.addressInfo.aAddress
+	var datetime = that.dateTimeValue;
+	var param = {"oPaymethod":that.selectValue,"oType":1,"o_remarks":that.textareaRemarks,"o_address":address,"oDeliverytime":datetime}
+	var odArray = [];
+	for(var i = 0;i < that.cartProduct.length;i++){
+		var product = that.cartProduct[i];
+		var od = {"odPsid":product.cPsid,"odCount":product.cCount,"cTotal":product.cTotal}
+		odArray.push(od);
+	}
+	param.orderDetail = odArray;
+	console.log(param)
+	req.post("order/commit_unifiedorder",param,"json",function(res){
+		console.log("提交订单:");
+		console.log(res);
+		var data = res.data.data;
+		var dataStr = encodeURIComponent(JSON.stringify(data))
+		var url = "/pages/cart/pay?payParam="+dataStr+"&productList="+JSON.stringify(that.cartProduct)+"&address="+address+"&datetime="+that.dateTimeLable+"&payMethod="+that.selectLabel+"&remarks="+that.textareaRemarks+"&zongjia="+that.zongjia;
+		uni.navigateTo({
+			url:url
+		})
+		
+		
+	})
 }
 
 export default{
 	selectCarts,
 	deleteCarts,
 	getDefaultAddress,
-	pay
+	commitOrder
 }
