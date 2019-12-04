@@ -178,6 +178,14 @@
 			},
 			commitOrder(){
 				var that = this;
+				if(that.dateTimeValue == ""){
+					uni.showToast({
+						title:"请选择配送时间",
+						icon:"none"
+					})
+					return;
+				}
+				
 				carts.commitOrder(that);
 			}
 		}

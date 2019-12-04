@@ -35,7 +35,7 @@
 					<text class="text-bold">订单内容</text>
 				</view>
 				<view class="padding-sm">
-					<text v-for="(item,index) in productList" :key="index">{{ item.productSpecs.product.pTitle  }}、</text>
+					<text v-for="(item,index) in productList" :key="index">{{ item.productSpecs.product.pTitle  }}<text v-if="index == productList.lengt-1">、</text></text>
 				</view>
 			</view>
 			<view class="padding-lr bg-white margin-top-sm">
@@ -49,7 +49,7 @@
 			<view class="margin-lr text-black">
 				<text>共 {{ productList.length }} 件，</text>
 				<text>合计：<text class="text-price text-red margin-right">{{ zongjia }}</text></text>
-				<button class="cu-btn bg-red round shadow-blur" @tap="commitOrder">确认支付</button>
+				<button class="cu-btn bg-red round shadow-blur" @tap="payOrder">确认支付</button>
 			</view>
 		</view>
 		
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+	import carts from '../../common/cart.js'
 	export default {
 		data() {
 			return {
@@ -72,7 +73,9 @@
 		},
 		onLoad(e) {
 			console.log(e);
-			this.payParam = JSON.parse(e.payParam); 
+			var payParamStr = e.payParam.replace("%3D","=")
+			this.payParam = JSON.parse(payParamStr); 
+			console.log(this.payParam)
 			this.address = e.address;
 			this.datetime = e.datetime;
 			this.payMethod = e.payMethod;
@@ -81,7 +84,10 @@
 			this.zongjia = e.zongjia;
 		},
 		methods: {
-			
+			payOrder(){
+				var that = this;
+				carts.payOrder(that);
+			}
 		}
 	}
 </script>

@@ -121,14 +121,16 @@
 		   ...mapState(['hasLogin','userInfo'])
 		},
 		created() {
-			var that = this;
-			if(this.hasLogin){
-				carts.selectCarts(that);
-			}
-			
-			
+			this.findAll();
 		},
 		methods: {
+			findAll(){
+				console.log(123123);
+				var that = this;
+				if(this.hasLogin){
+					carts.selectCarts(that);
+				}
+			},
 			login(){
 				var that = this;
 				login.mplogin(function(res){
