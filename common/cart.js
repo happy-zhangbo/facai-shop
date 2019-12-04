@@ -36,8 +36,8 @@ const getDefaultAddress = function(that){
 	})
 }
 
-const pay(that){
-	var param = {"oPaymethod":1,"oType":that.,"o_remarks":"","o_address":""}
+const commitOrder = function(that){
+	 var param = {"oPaymethod":1,"oType":1,"o_remarks":"","o_address":"","orderDetail":[]}
 	
 	
 }
@@ -46,5 +46,5 @@ export default{
 	selectCarts,
 	deleteCarts,
 	getDefaultAddress,
-	pay
+	commitOrder
 }
