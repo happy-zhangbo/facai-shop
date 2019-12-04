@@ -176,14 +176,9 @@
 					url:"/pages/cart/address"
 				})
 			},
-<<<<<<< HEAD
-			commit(){
-				
-=======
 			commitOrder(){
 				var that = this;
 				carts.commitOrder(that);
->>>>>>> 58a3f4b4575ac44b550a681cbcbedb6c90ba04e5
 			}
 		}
 	}
