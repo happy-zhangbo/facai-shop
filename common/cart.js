@@ -37,11 +37,6 @@ const getDefaultAddress = function(that){
 }
 
 const commitOrder = function(that){
-<<<<<<< HEAD
-	 var param = {"oPaymethod":1,"oType":1,"o_remarks":"","o_address":"","orderDetail":[]}
-	
-	
-=======
 	console.log(that.cartProduct)
 	var address = that.addressInfo.aCity+that.addressInfo.aAddress
 	var datetime = that.dateTimeValue;
