@@ -39,7 +39,7 @@
 				></w-picker>
 			</view>
 			<view class="cu-form-group">
-				<textarea maxlength="-1" @input="textareaAInput" placeholder="详细地址"></textarea>
+				<textarea maxlength="-1" @input="textareaAInput" placeholder="请输入详细地址到门牌号"></textarea>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">是否默认</view>

@@ -31,7 +31,7 @@
 						<text class="">配送时间</text>
 					</view>
 					<view class="action">
-						<text class="">{{ datetime }}</text>
+						<text class="">{{ dateTimeLable }}</text>
 					</view>
 				</view>
 				<w-picker
@@ -79,14 +79,14 @@
 		</view>
 		<view class="cu-item">
 			<view class="cu-form-group">
-				<textarea maxlength="-1" placeholder="订单备注"></textarea>
+				<textarea maxlength="-1" @input="textareaAInput" placeholder="订单备注"></textarea>
 			</view>
 		</view>
 		<view class="cu-bar bg-white tabbar foot shop justify-end">
 			<view class="margin-lr text-black">
 				<text>共 3 件，</text>
 				<text>合计：<text class="text-price text-red margin-right">{{ zongjia }}</text></text>
-				<button class="cu-btn bg-red round shadow-blur" @tap="toPreview">提交订单</button>
+				<button class="cu-btn bg-red round shadow-blur" @tap="commitOrder">提交订单</button>
 			</view>
 		</view>
 		
@@ -106,8 +106,10 @@
 			return {
 				index: 0,
 				mode:"range",
-				datetime:"请选择配送时间",
+				dateTimeLable:"请选择配送时间",
+				dateTimeValue:"",
 				selectLabel:"在线支付",
+				selectValue:0 ,
 				selectList:[{
 					label:"在线支付",
 					value:0
@@ -115,6 +117,7 @@
 				cartProduct:[],
 				zongjia:0.00,
 				addressInfo:null,
+				textareaRemarks:""
 			}
 		},
 		onLoad(e) {
@@ -141,45 +144,41 @@
 			}
 		},
 		methods: {
+			textareaAInput(e){
+				this.textareaRemarks = e.detail.value;
+			},
 			PayMethodChange(val) {
 				console.log(val)
 				this.index = val.defaultVal;
+				this.selectValue = this.selectList[index].value;
 				this.selectLabel = val.result;
 			},
 			DateTimeChange(val) {
-				this.datetime = val.result;
-			},
-			getUserLocation(){
-				var that = this;
-				uni.getLocation({
-					success: function (res) {
-						console.log('当前位置的经度：' + res.longitude);
-						console.log('当前位置的纬度：' + res.latitude);
-						var param = {
-							key:"34b4cb65debcdafdb24343be1a1bc76e",
-							location:res.longitude+","+res.latitude
-						}
-						that.$req.get("https://restapi.amap.com/v3/geocode/regeo",param,function(res){
-							console.log(res);
-						})
-					},
-					fail(res) {
-						console.log(res);
-					}
-				});
+				var datetime = val.result;
+				var dateArray = datetime.split(" ");
+				var hour = 0;
+				if(dateArray[1]=="上午"){
+					hour = parseInt(dateArray[2]);
+				}else{
+					hour = parseInt(dateArray[2])+12;
+				}
+				
+				this.dateTimeLable = val.result
+				var dateStr = dateArray[0]+" "+hour+":00:00"
+				this.dateTimeValue = new Date(dateStr).getTime();
 				
 			},
 			toggleTab(item,index){
 				this.$refs[item].show();
 			},
-			onConfirm(val){
-				console.log(val);
-				this.resultInfo=val;
-			},
 			toAddress(){
 				uni.navigateTo({
 					url:"/pages/cart/address"
 				})
+			},
+			commitOrder(){
+				var that = this;
+				carts.commitOrder(that);
 			}
 		}
 	}
