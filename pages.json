@@ -145,6 +145,10 @@
 			"path":"pages/cart/address",
 			"style":{}
 		}
+		,{
+			"path":"pages/cart/pay",
+			"style":{}
+		}
     ],
 	"globalStyle": {
 		"mp-alipay": {
@@ -173,6 +177,11 @@
 			{
 				"name": "添加地址", //模式名称
 				"path": "pages/my/addAddress", //启动页面
+				"query": "" //启动参数
+			},
+			{
+				"name": "支付订单", //模式名称
+				"path": "pages/cart/pay", //启动页面
 				"query": "" //启动参数
 			}
 		]
