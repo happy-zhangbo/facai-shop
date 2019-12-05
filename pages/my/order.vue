@@ -12,15 +12,15 @@
 		<view class="cu-card">
 			<view class="cu-item padding" v-for="(item,index) in orderList" :key="index">
 				<view class="justify-between flex align-center solid-bottom padding-bottom-sm">
-					<view class="">编号：<text class="text-bold">{{ item.soNum }}</text></view>
+					<view class="">编号：<text class="text-bold">{{ item.oSerialnum }}</text></view>
 					<view>
-						<text class="text-red" v-if="item.state == 0">待支付</text>
-						<text class="text-red" v-if="item.state == 1">待收货</text>
-						<text class="text-red" v-if="item.state == 2">已完成</text>
-						<text class="text-red" v-if="item.state == 3">已取消</text>
+						<text class="text-red" v-if="item.oState == 0">待支付</text>
+						<text class="text-red" v-if="item.oState == 1">待收货</text>
+						<text class="text-black" v-if="item.oState == 2">订单已完成</text>
+						<text class="text-gray" v-if="item.oState == -1">订单已取消</text>
 					</view>
 				</view>
-				<view class="flex solid-bottom" v-for="(detailItem,detailIndex) in item.orderDetailList" :key="detailIndex">
+				<!-- <view class="flex solid-bottom" v-for="(detailItem,detailIndex) in item.orderDetail" :key="detailIndex">
 					<view class="flex-sub padding-sm">
 						<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
 						 mode="aspectFill" style="width: 100%;height: 105px;" class="radius"></image>
@@ -34,17 +34,19 @@
 						</view>
 					</view>
 				</view>
-				<view class="text-center padding-top-sm text-red ">查看详情</view>
-				<view class="text-sm justify-between flex align-center" :class="item.state == 1||item.state == 0?'':'padding-top-sm'">
+				<view class="text-center padding-top-sm text-red ">查看详情</view> -->
+				<view class="text-sm justify-between flex align-center" :class="item.oState == 1||item.oState == 0?'':'padding-top-sm'">
 					<view>
-						共{{ item.orderDetailList.length }}件商品<text class="margin-left-sm">合计：</text><text class="text-xl text-price text-bold ">{{ item.total }}</text>
+						<!-- 共{{ item.orderDetailList.length }}件商品<text class="margin-left-sm"> -->
+						合计：</text><text class="text-xl text-price text-bold text-red">{{ item.oTotalamount }}</text>
 					</view>
 					<view class="grid col-1">
 						<view class="margin-tb-sm text-right">
 							<!-- <button class="cu-btn round bg-black shadow margin-left" >评价</button> -->
-							<button class="cu-btn round bg-red shadow margin-left" v-if="item.state == 1">确认收货</button>
-							<button class="cu-btn round bg-red shadow margin-left" v-if="item.state == 0">待支付</button>
-							<button class="cu-btn round bg-black shadow margin-left" v-if="item.state == 2">联系我们</button>
+							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 1">确认收货</button>
+							<button class="cu-btn round line-black margin-left" v-if="item.oState == 0">取消支付</button>
+							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 0">待支付</button>
+							<button class="cu-btn round bg-black shadow margin-left" v-if="item.oState == 2||item.oState == -1">联系我们</button>
 						</view>
 					</view>
 				</view>
@@ -56,6 +58,7 @@
 </template>
 
 <script>
+	import order from '../../common/order.js'
 	export default {
 		data() {
 			return {
@@ -109,6 +112,10 @@
 				TabCur: 0,
 				scrollLeft: 0
 			}
+		},
+		onLoad(){
+			var that = this;
+			order.findAllOrder(that);
 		},
 		methods: {
 			tabSelect(e) {
