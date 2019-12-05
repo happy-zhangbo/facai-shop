@@ -40,7 +40,7 @@ const commitOrder = function(that){
 	console.log(that.cartProduct)
 	var address = that.addressInfo.aCity+that.addressInfo.aAddress
 	var datetime = that.dateTimeValue;
-	var param = {"oPaymethod":that.selectValue,"oType":1,"o_remarks":that.textareaRemarks,"o_address":address,"oDeliverytime":datetime}
+	var param = {"oPaymethod":that.selectValue,"oType":1,"oRemarks":that.textareaRemarks,"oAddress":address,"oDeliverytime":datetime}
 	var odArray = [];
 	var cIdList = [];
 	for(var i = 0;i < that.cartProduct.length;i++){
