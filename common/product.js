@@ -26,6 +26,7 @@ const selectProductDetail = function(that,pid){
 		console.log("查询产品详情:");
 		console.log(res);
 		var data = res.data.data;
+		that.swiperList = JSON.parse(data.pImgarray);
 		that.productDetail = data;
 	})
 }
