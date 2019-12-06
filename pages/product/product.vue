@@ -28,7 +28,7 @@
 			<view class="cu-item" v-for="(item,index) in productList" :key="index" @tap="toDetail" :data-id="index">
 				<view class="flex">
 					<view class="flex-sub padding-sm">
-						<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
+						<image :src="item.pCover"
 						 mode="aspectFill" style="width: 100%;height: 115px;" class="radius"></image>
 					</view>
 					
@@ -38,9 +38,10 @@
 						<view class="text-sm text-gray justify-between flex align-center">
 							
 							<view>
-								<text class="text-lg" style="right: 0px;">
-									<text class="text-price text-red text-bold">{{ item.pSpecsList[0].sPrice}} </text>
-									<text class="text-red text-bold" v-if="item.pSpecsList.length > 1">-{{ item.pSpecsList[item.pSpecsList.length-1].sPrice}}</text>
+								<text class="text-lg text-red text-bold" style="right: 0px;">
+									<text class="text-price ">{{ item.pSpecsList[0].sPrice}} </text>
+									<text class="" v-if="item.pSpecsList.length > 1"><text style="margin: 0px 3px;">~</text>{{ item.pSpecsList[item.pSpecsList.length-1].sPrice}}</text>
+									<text class="">元</text>
 								</text>
 							</view>
 							<view>
@@ -63,7 +64,8 @@
 					<form>
 						<view class="cu-form-group">
 							<view class="title">数量</view>
-							<uni-number-box :value="numberValue" @change="change" />
+							<uni-number-box :value="numberValue" @change="change"/>
+							单位：{{ danwei }}
 						</view>
 						<view class="padding">
 							<view class="title text-left margin-bottom-sm">规格</view>
@@ -124,7 +126,8 @@
 				radio: 0,
 				productTypeList:[],
 				productList:[],
-				productSpces:[]
+				productSpces:[],
+				danwei:""
 			}
 		},
 		computed:{
@@ -153,7 +156,9 @@
 				
 				var index = e.currentTarget.dataset.id;
 				this.productSpces = this.productList[index].pSpecsList;
+				this.danwei = this.productSpces[0].sBrief
 				this.addToCartModel = true;
+				
 			},
 			closeAddToCartModel(){
 				this.productSpces = [];
@@ -187,9 +192,19 @@
 			},
 			radioChange(e) {
 				this.radio = e.detail.value
+				this.danwei = this.productSpces[this.radio].sBrief
 			},
 			change(event) {
+				if(event.value <= 0){
+					this.numberValue = 1;
+					return;
+				}
+				if(event.value >= 10000){
+					this.numberValue = 9999;
+					return;
+				}
 				this.numberValue = event.value;
+				
 			}
 		}
 	}
@@ -199,7 +214,7 @@
 .impleName{
 	display: -webkit-box;
 	overflow: hidden;
-	-webkit-line-clamp: 1;
+	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 }
 </style>

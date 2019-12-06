@@ -10,14 +10,16 @@
 			</view>
 		</scroll-view>
 		<view class="cu-card">
-			<view class="cu-item padding" v-for="(item,index) in orderList" :key="index">
+			<view class="cu-item padding" v-for="(item,index) in orderList" :key="index" @tap="toDetail" :data-id="index">
 				<view class="justify-between flex align-center solid-bottom padding-bottom-sm">
 					<view class="">编号：<text class="text-bold">{{ item.oSerialnum }}</text></view>
 					<view>
 						<text class="text-red" v-if="item.oState == 0">待支付</text>
-						<text class="text-red" v-if="item.oState == 1">待收货</text>
-						<text class="text-black" v-if="item.oState == 2">订单已完成</text>
+						<text class="text-red" v-if="item.oState == 1">正在备货中</text>
+						<text class="text-black" v-if="item.oState == 2">已发货</text>
+						<text class="text-black" v-if="item.oState == 3">订单已完成</text>
 						<text class="text-gray" v-if="item.oState == -1">订单已取消</text>
+						<text class="text-gray" v-if="item.oState == -2">订单支付失败</text>
 					</view>
 				</view>
 				<!-- <view class="flex solid-bottom" v-for="(detailItem,detailIndex) in item.orderDetail" :key="detailIndex">
@@ -43,10 +45,10 @@
 					<view class="grid col-1">
 						<view class="margin-tb-sm text-right">
 							<!-- <button class="cu-btn round bg-black shadow margin-left" >评价</button> -->
-							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 1">确认收货</button>
-							<button class="cu-btn round line-black margin-left" v-if="item.oState == 0">取消支付</button>
-							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 0">待支付</button>
-							<button class="cu-btn round bg-black shadow margin-left" v-if="item.oState == 2||item.oState == -1">联系我们</button>
+							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 2" @click.stop="" >确认收货</button>
+							<button class="cu-btn round line-black margin-left" v-if="item.oState == 0" @click.stop="cancelOrder" :data-index="index">取消支付</button>
+							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 0" @click.stop="payOrder" :data-index="index">待支付</button>
+							<button class="cu-btn round bg-black shadow margin-left" v-if="item.oState == 3 ||item.oState == -1||item.oState == 1||item.oState == -2">联系我们</button>
 						</view>
 					</view>
 				</view>
@@ -121,6 +123,25 @@
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
+			},
+			toDetail(e){
+				var index = e.currentTarget.dataset.id;
+				
+				uni.navigateTo({
+					url:"../my/orderDetail?oId="+this.orderList[index].oId
+				})
+			},
+			cancelOrder(e){
+				var index = e.currentTarget.dataset.index;
+				var od = this.orderList[index];
+				var that = this;
+				order.cancelOrder(that,od.oSerialnum);
+			},
+			payOrder(e){
+				var index = e.currentTarget.dataset.index;
+				var od = this.orderList[index];
+				var that = this;
+				order.payOrder(that,od.oSerialnum);
 			}
 		}
 	}

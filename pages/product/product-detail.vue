@@ -7,8 +7,8 @@
 		<swiper class="screen-swiper round-dot" :indicator-dots="true" :circular="true"
 		 :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in swiperList" :key="index">
-				<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
-				<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
+				<image :src="item.src" mode="aspectFill" v-if="item.type=='image'"></image>
+				<video :src="item.src" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
 			</swiper-item>
 		</swiper>
 		<view class="flex bg-white solid-bottom">
@@ -43,8 +43,8 @@
 		
 		<view class="cu-bar bg-white tabbar shop foot justify-between">
 			<view class="padding-left">
-				价格：<text class="text-price text-red text-bold text-lg">{{ productDetail.pSpecsList[0].sPrice }}</text>
-				<text class="text-red text-bold text-lg" v-if="productDetail.pSpecsList.length > 1">-{{ productDetail.pSpecsList[productDetail.pSpecsList.length-1].sPrice}}</text>
+				价格：<text class="text-price text-red text-bold text-lg">{{ productDetail.pSpecsList[0].sPrice }} </text>
+				<text class="text-red text-bold text-lg" v-if="productDetail.pSpecsList.length > 1"><text style="margin: 0px 3px;">~</text>{{ productDetail.pSpecsList[productDetail.pSpecsList.length-1].sPrice}}</text>
 			</view>
 			<view class="padding-right">
 				<button class="cu-btn bg-black round shadow-blur" @tap="addToCart"><text class="cuIcon-cart margin-right-xs"></text>加入购物车</button>
@@ -64,6 +64,7 @@
 						<view class="cu-form-group">
 							<view class="title">数量</view>
 							<uni-number-box :value="numberValue" @change="change" />
+							单位：{{ danwei }}
 						</view>
 						<view class="padding-lr">
 							<view class="title text-left margin-bottom-sm">规格</view>
@@ -113,6 +114,7 @@
 				numberValue: 1,
 				radio: 0,
 				TabCur: 0,
+				danwei:"",
 				productDetail:{
 					pSpecsList:[{sPrice:0}]
 				},
@@ -162,14 +164,23 @@
 		methods: {
 			addToCart(e){
 				this.addToCartModel = true;
+				this.danwei = this.productDetail.pSpecsList[0].sBrief
 			},
 			closeAddToCartModel(){
 				this.addToCartModel = false;
 			},
 			radioChange(e) {
-				this.radio = e.detail.value
+				this.radio = e.detail.value;
+				this.danwei = this.productDetail.pSpecsList[this.radio].sBrief
 			},
 			change(event) {
+				
+				if(event.value <= 0){
+					this.numberValue = 1;
+				}
+				if(event.value >= 10000){
+					this.numberValue = 9999;
+				}
 				this.numberValue = event.value;
 			},
 			tabSelect(e) {

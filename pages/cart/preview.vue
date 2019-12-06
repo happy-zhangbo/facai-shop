@@ -67,7 +67,7 @@
 					<view class="padding">
 						<view class="text-black">{{ item.productSpecs.product.pTitle }}</view>
 						<view class="text-sm text-gray margin-tb-sm">
-							<view>数量：{{ item.cCount }};</view>
+							<view>数量：{{ item.cCount }}{{ item.productSpecs.sBrief }};</view>
 							<view>规格：{{ item.productSpecs.sName }};</view>
 						</view>
 					</view>

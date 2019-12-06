@@ -25,7 +25,7 @@
 								<view class="flex">
 									<view class="padding-left flex align-center"><checkbox :class="item.checked?'checked black':''" :checked="item.checked" :value="index+''"></checkbox></view>
 									<view class="flex-sub padding-sm">
-										<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
+										<image :src="item.productSpecs.product.pCover"
 										 mode="aspectFill" style="width: 100%;height: 115px;" class="radius"></image>
 									</view> <!-- #ifdef APP-PLUS -->
 									
@@ -35,9 +35,10 @@
 										<view class="text-sm text-gray margin-tb-sm impleName">{{ item.productSpecs.sName }}</view>
 										<view class="text-sm text-gray flex justify-between align-center">
 											<uni-number-box :value="item.cCount" @change="change" :ids="index+''" />
+											单位：{{ item.productSpecs.sBrief }}
 											<view>
 												<text class="text-lg" style="right: 0px;">
-													<text class="text-price text-red text-bold">{{ item.cTotal }}</text>
+													<text class="text-price text-red text-bold">{{ item.cTotal }}元</text>
 												</text>
 											</view>
 										</view>
@@ -56,7 +57,7 @@
 					</view>
 					
 					<view class="margin-lr">
-						合计：<text class="text-price text-red margin-right text-bold">{{ zongjia }}</text>
+						合计：<text class="text-price text-red margin-right text-bold">{{ zongjia }}元</text>
 						<button class="cu-btn bg-red round shadow-blur" @tap="toPreview">立即订购</button>
 					</view>
 					
@@ -168,10 +169,12 @@
 					ids = event.ids;
 				
 				items[ids].numberValue = event.value;
-				if(items[ids].numberValue == 0){
+				if(items[ids].numberValue <= 0){
 					items[ids].numberValue = 1;
 				}
-				
+				if(items[ids].numberValue >= 10000){
+					items[ids].numberValue = 9999;
+				}
 				console.log(items[ids].numberValue);
 				items[ids].cTotal = items[ids].numberValue * items[ids].productSpecs.sPrice;
 				var zongjia = 0.00;
