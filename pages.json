@@ -126,6 +126,10 @@
 		    "style" : {}
 		}
 		,{
+		    "path" : "pages/my/orderDetail",
+		    "style" : {}
+		}
+		,{
 		    "path" : "pages/my/address",
 		    "style" : {}
 		}
@@ -200,6 +204,11 @@
 			{
 				"name": "支付失败", //模式名称
 				"path": "pages/cart/fail_Pay", //启动页面
+				"query": "" //启动参数
+			},
+			{
+				"name": "订单详情", //模式名称
+				"path": "pages/my/orderDetail", //启动页面
 				"query": "" //启动参数
 			}
 		]
