@@ -1,6 +1,6 @@
 import store from '../store'
 
-const baseURL = "http://127.0.0.1:8888/";
+const baseURL = "http://192.168.1.112:8888/";
 const timeout = 1000*10;
 
 const get = function(url,param,callback){

@@ -1,15 +1,20 @@
 import req from './req'
 
-const findAllOrder = function(that){
-	req.get("order/select_orders",{},function(res){
+const findAllOrder = function(that,state){
+	req.get("order/select_orders",{oState:state},function(res){
 		console.log("查询订单:");
 		console.log(res);
 		var data = res.data.data;
 		that.orderList = data;
 	})	
 }
-const findOrderDetail = function(that){
-	
+const findOrderDetail = function(that,oId){
+	req.get("order/select_selectAllOrderDetail",{oid:oId},function(res){
+		console.log("查询订单详情:");
+		console.log(res);
+		var data = res.data.data;
+		that.orderDetail = data;
+	})
 }
 const cancelOrder = function(that,serialNum){
 	var param = {"serialNum":serialNum}
