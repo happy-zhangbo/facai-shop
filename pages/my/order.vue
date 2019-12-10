@@ -46,13 +46,32 @@
 						<view class="margin-tb-sm text-right">
 							<!-- <button class="cu-btn round bg-black shadow margin-left" >评价</button> -->
 							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 2" @click.stop="" >确认收货</button>
-							<button class="cu-btn round line-black margin-left" v-if="item.oState == 0" @click.stop="cancelOrder" :data-index="index">取消支付</button>
+							<button class="cu-btn round line-black margin-left" v-if="item.oState == 0" @click.stop="cancelOrder" :data-index="index">取消订单</button>
 							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 0" @click.stop="payOrder" :data-index="index">待支付</button>
-							<button class="cu-btn round bg-black shadow margin-left" v-if="item.oState == 3 ||item.oState == -1||item.oState == 1||item.oState == -2">联系我们</button>
+							<button class="cu-btn round bg-black shadow margin-left" v-if="item.oState == 3 ||item.oState == -1||item.oState == 1||item.oState == -2" @click.stop="" open-type="contact">联系我们</button>
 						</view>
 					</view>
 				</view>
-				<view class="text-sm text-right text-gray margin-top">2019年11月10日 12:03</view>
+				<view class="text-bold solid-bottom padding-tb-sm">
+					<view class="">收货信息</view>
+				</view>
+				<view class="flex align-center solid-bottom padding-tb-sm">
+					<view class="flex-sub text-center">联系人：</view>
+					<view class="flex-treble"><text class="text-bold text-center">{{ item.oLink }}</text></view>
+				</view>
+				<view class="flex align-center solid-bottom padding-tb-sm">
+					<view class="flex-sub text-center">联系电话：</view>
+					<view class="flex-treble"><text class="text-bold text-center">{{ item.oLinktel }}</text></view>
+				</view>
+				<view class="flex align-center solid-bottom padding-tb-sm">
+					<view class="flex-sub text-center">收货地址：</view>
+					<view class="flex-treble"><text class="text-bold text-center">{{ item.oAddress }}</text></view>
+				</view>
+				<view class="flex  align-center solid-bottom padding-tb-sm">
+					<view class="flex-sub text-center">送货时间：</view>
+					<view class="flex-treble"><text class="text-bold text-center">{{ item.oDeliverytime }}</text></view>
+				</view>
+				<view class="text-sm text-right text-gray margin-top">{{ item.oCreatetime }}</view>
 			</view>
 		</view>
 		
@@ -65,15 +84,26 @@
 		data() {
 			return {
 				orderState:[{
-					name:"全部订单"
+					name:"全部订单",
+					v:""
 				},{
-					name:"待支付"
+					name:"待支付",
+					v:0
 				},{
-					name:"待收货"
+					name:"备货中",
+					v:1
 				},{
-					name:"已完成"
+					name:"待收货",
+					v:2
 				},{
-					name:"已取消"
+					name:"已完成",
+					v:3
+				},{
+					name:"已取消",
+					v:-1
+				},{
+					name:"支付失败",
+					v:-2
 				}],
 				orderList:[{
 					soNum:191110120125634,
@@ -117,12 +147,15 @@
 		},
 		onLoad(){
 			var that = this;
-			order.findAllOrder(that);
+			order.findAllOrder(that,"");
 		},
 		methods: {
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
-				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
+				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60;
+				var v = this.orderState[this.TabCur].v;
+				var that = this;
+				order.findAllOrder(that,v);
 			},
 			toDetail(e){
 				var index = e.currentTarget.dataset.id;

@@ -83,7 +83,7 @@
 							</scroll-view>
 						</view>
 						<view class="padding-lr text-red">
-							总价：<text class="text-price text-xl text-bold">{{ productDetail.pSpecsList[radio].sPrice*numberValue }}</text>
+							总价：<text class="text-price text-xl text-bold">{{ productDetail.pSpecsList[radio].sPrice*numberValue }}元</text>
 						</view>
 					</form>
 				</view>

@@ -27,13 +27,13 @@
 				</view>
 			</view>
 			<view class="cu-item">
-				<navigator class="content" hover-class="none" url="../list/list" open-type="navigate">
+				<navigator class="content" hover-class="none" url="/pages/my/customerService" open-type="navigate">
 					<text class="cuIcon-servicefill text-black"></text>
 					<text class="text-grey">客服</text>
 				</navigator>
 			</view>	
 			<view class="cu-item">
-				<navigator class="content" hover-class="none" url="../list/list" open-type="navigate">
+				<navigator class="content" hover-class="none" url="/pages/my/about" open-type="navigate">
 					<text class="cuIcon-crownfill text-black"></text>
 					<text class="text-grey">关于</text>
 				</navigator>
