@@ -38,7 +38,9 @@
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ]
             },
-            "ios" : {},
+            "ios" : {
+                "idfa" : false
+            },
             /* ios打包配置 */
             "sdkConfigs" : {}
         }
@@ -52,9 +54,12 @@
         "setting" : {
             "urlCheck" : false,
             "es6" : true,
-			"checkSiteMap": false
+            "checkSiteMap" : false
         },
-        "permission" : {}
+        "permission" : {},
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "h5" : {
         "title" : "ColorUi for UniApp",
