@@ -24,6 +24,9 @@ const mplogin = function(callback){
 							callback(res);
 						}
 					})
+				},
+				fail() {
+					console.log("获取用户信息失败")
 				}
 			});
 			

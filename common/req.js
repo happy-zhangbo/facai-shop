@@ -1,6 +1,15 @@
 import store from '../store'
 
-const baseURL = "http://192.168.1.112:8888/";
+
+
+var baseURL = "https://127.0.0.1:8888/";
+if(process.env.NODE_ENV === 'development'){
+    baseURL = "https://192.168.1.113:8888/";
+}else{
+    baseURL = "https://lonelysky.com.cn:8888/";
+}
+
+
 const timeout = 1000*10;
 
 const get = function(url,param,callback){
