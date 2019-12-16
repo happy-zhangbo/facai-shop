@@ -89,7 +89,7 @@
 					<view class="flex-treble"><text class="text-bold text-center">{{ orderDetail.oDeliverytime }}</text></view>
 				</view>
 				<view class="padding flex flex-direction">
-					<button class="cu-btn bg-black margin-tb-sm lg" v-if="orderDetail.oState == 2" @click.stop="">确认收货</button>
+					<button class="cu-btn bg-black margin-tb-sm lg" v-if="orderDetail.oState == 2" @click.stop="confirmOrder">确认收货</button>
 					<button class="cu-btn bg-white margin-tb-sm lg" v-if="orderDetail.oState == 0" @click.stop="cancelOrder">取消订单</button>
 					<button class="cu-btn bg-red margin-tb-sm lg" v-if="orderDetail.oState == 0"  @click.stop="payOrder">去支付</button>
 					<button class="cu-btn bg-black margin-tb-sm lg" v-if="orderDetail.oState == 3 ||orderDetail.oState == -1||orderDetail.oState == 1||orderDetail.oState == -2" @click.stop="" open-type="contact">联系我们</button>
@@ -121,6 +121,10 @@
 			cancelOrder(e){
 				var that = this;
 				order.cancelOrder(that,that.orderDetail.oSerialnum);
+			},
+			confirmOrder(e){
+				var that = this;
+				order.confirmOrder(that,that.orderDetail.oSerialnum);
 			},
 			payOrder(e){
 				var that = this;

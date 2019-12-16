@@ -45,7 +45,7 @@
 					<view class="grid col-1">
 						<view class="margin-tb-sm text-right">
 							<!-- <button class="cu-btn round bg-black shadow margin-left" >评价</button> -->
-							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 2" @click.stop="" >确认收货</button>
+							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 2" @click.stop="confirmOrder" :data-index="index">确认收货</button>
 							<button class="cu-btn round line-black margin-left" v-if="item.oState == 0" @click.stop="cancelOrder" :data-index="index">取消订单</button>
 							<button class="cu-btn round bg-red shadow margin-left" v-if="item.oState == 0" @click.stop="payOrder" :data-index="index">待支付</button>
 							<button class="cu-btn round bg-black shadow margin-left" v-if="item.oState == 3 ||item.oState == -1||item.oState == 1||item.oState == -2" @click.stop="" open-type="contact">联系我们</button>
@@ -105,42 +105,7 @@
 					name:"支付失败",
 					v:-2
 				}],
-				orderList:[{
-					soNum:191110120125634,
-					state:1,
-					total:300,
-					orderDetailList:[{
-						title:"产品0",
-						specs:"1+1",
-						count:50
-					},{
-						title:"产品1",
-						specs:"1+1",
-						count:50
-					}]
-				},{
-					soNum:191110122525215,
-					state:2,
-					total:100,
-					orderDetailList:[{
-						title:"产品0",
-						specs:"1+1",
-						count:50
-					}]
-				},{
-					soNum:191110123025634,
-					state:0,
-					total:300,
-					orderDetailList:[{
-						title:"产品0",
-						specs:"1+1",
-						count:50
-					},{
-						title:"产品1",
-						specs:"1+1",
-						count:50
-					}]
-				}],
+				orderList:[],
 				TabCur: 0,
 				scrollLeft: 0
 			}
@@ -169,6 +134,12 @@
 				var od = this.orderList[index];
 				var that = this;
 				order.cancelOrder(that,od.oSerialnum);
+			},
+			confirmOrder(e){
+				var index = e.currentTarget.dataset.index;
+				var od = this.orderList[index];
+				var that = this;
+				order.confirmOrder(that,od.oSerialnum);
 			},
 			payOrder(e){
 				var index = e.currentTarget.dataset.index;

@@ -15,16 +15,16 @@
 		</scroll-view> -->
 		
 		
-		<view class="cu-bar search bg-white" style="margin-top: 50px;" >
+		<!-- <view class="cu-bar search bg-white" style="margin-top: 50px;" >
 			<view class="search-form round">
 				<text class="cuIcon-search"></text>
 				<input @focus="InputFocus" @blur="InputBlur" :adjust-position="false" type="text" placeholder="输入产品名称搜索" confirm-type="search"></input>
 			</view>
-			<!-- <view class="action">
+			<view class="action">
 				<button class="cu-btn bg-black shadow-blur round">搜索</button>
-			</view> -->
-		</view>
-		<view class="cu-card">
+			</view>
+		</view> -->
+		<view class="cu-card" style="margin-top: 50px;">
 			<view class="cu-item" v-for="(item,index) in productList" :key="index" @tap="toDetail" :data-id="index">
 				<view class="flex">
 					<view class="flex-sub padding-sm">

@@ -8,9 +8,9 @@
 				<view class="cu-avatar lg round margin-left" :style="{'background-image':'url('+userInfo.avatarUrl+')'}"></view>
 				<text class="margin-lr-xl text-xl">{{ userInfo.userName }}</text>
 			</view>
-			<view v-if="!hasLogin" @tap="login">
+			<view v-if="!hasLogin">
 				<view class="cu-avatar lg round margin-left"><text class="cuIcon-people"></text></view>
-				<text class="margin-lr-xl text-xl">点击登录</text>
+				<button class="margin-lr-xl cu-btn round bg-black" open-type="getUserInfo" @tap="login">点击登录</button>
 			</view>
 		</view>
 		<view class="cu-list menu margin-top-xl card-menu ">

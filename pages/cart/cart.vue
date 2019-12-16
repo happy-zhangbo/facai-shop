@@ -10,7 +10,7 @@
 		</view>
 		<view class="text-center" style="margin-top: 55px;" v-if="!hasLogin">
 			<view class=" padding-tb-xl text-grey">您还未登录</view>
-			<button class="cu-btn round bg-black" @tap="login">去登录</button>
+			<button class="cu-btn round bg-black" open-type="getUserInfo" @tap="login">去登录</button>
 		</view>
 		<view v-if="hasLogin">
 			<view class="text-center" style="margin-top: 55px;" v-if="0 == cartList.length">

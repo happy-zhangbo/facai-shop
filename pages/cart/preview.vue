@@ -39,6 +39,7 @@
 					dayStep="60"
 					@confirm="DateTimeChange"
 					ref="limitHour" 
+					@cancel="cancelDatetime"
 					themeColor="#f00"
 				></w-picker>
 				<view class="cu-item arrow" @tap="toggleTab('selector',0)">
@@ -58,6 +59,7 @@
 					ref="selector" 
 					themeColor="#f00"
 					:selectList="selectList"
+					style="z-index: 999;"
 				></w-picker>
 			</view>
 		</form>
@@ -84,7 +86,7 @@
 		</view>
 		<view class="cu-bar bg-white tabbar foot shop justify-end">
 			<view class="margin-lr text-black">
-				<text>共 3 件，</text>
+				<text>共 {{ cartProduct.length }} 件，</text>
 				<text>合计：<text class="text-price text-red margin-right">{{ zongjia }}</text></text>
 				<button class="cu-btn bg-red round shadow-blur" @tap="commitOrder">提交订单</button>
 			</view>
@@ -98,6 +100,7 @@
 <script>
 	import wPicker from "@/components/w-picker/w-picker.vue";
 	import carts from '../../common/cart.js'
+	import moment from 'moment'
 	export default {
 		components:{
 			wPicker
@@ -117,7 +120,8 @@
 				cartProduct:[],
 				zongjia:0.00,
 				addressInfo:null,
-				textareaRemarks:""
+				textareaRemarks:"",
+				showMask:true
 			}
 		},
 		onLoad(e) {
@@ -165,8 +169,11 @@
 				
 				this.dateTimeLable = val.result
 				var dateStr = dateArray[0]+" "+hour+":00:00"
-				this.dateTimeValue = new Date(dateStr).getTime();
-				
+				var datelong = moment(dateStr,"YYYY-MM-DD HH");
+				this.dateTimeValue = datelong.valueOf();
+				console.log(this.dateTimeValue)
+			},
+			cancelDatetime(e){
 			},
 			toggleTab(item,index){
 				this.$refs[item].show();
@@ -181,6 +188,13 @@
 				if(that.dateTimeValue == ""){
 					uni.showToast({
 						title:"请选择配送时间",
+						icon:"none"
+					})
+					return;
+				}
+				if(that.addressInfo == null){
+					uni.showToast({
+						title:"请选择配送地点",
 						icon:"none"
 					})
 					return;
