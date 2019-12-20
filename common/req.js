@@ -4,7 +4,7 @@ import store from '../store'
 
 var baseURL = "https://127.0.0.1:8888/";
 if(process.env.NODE_ENV === 'development'){
-    baseURL = "https://192.168.1.113:8888/";
+    baseURL = "https://127.0.0.1:8888/";
 }else{
     baseURL = "https://lonelysky.com.cn:8888/";
 }
