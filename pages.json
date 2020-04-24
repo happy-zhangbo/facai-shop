@@ -113,6 +113,10 @@
 		    "path" : "pages/product/product-detail",
 		    "style" : {}
 		}
+		,{
+		    "path" : "pages/product/search",
+		    "style" : {}
+		}
         ,{
             "path" : "pages/cart/cart",
             "style" : {}

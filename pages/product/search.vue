@@ -1,35 +1,26 @@
 <template>
 	<view>
-		<!-- <cu-custom bgColor="bg-black shadow" :isBack="false">
-			<block>返回</block>
-			<block slot="content">产品</block>
-		</cu-custom> -->
-		<view class="" :style="[{height:CustomBar + 'px'}]">
-			<view class="cu-bar bg-black search" :style="[{'height':CustomBar + 'px'},{'padding-top':StatusBar+'px'}]">
-				<view class="cuIcon-searchlist padding-lg" style="font-size: 55rpx;" @tap="toSearch">
-					
-				</view>
-				<view class="content"  :style="[{top:StatusBar + 'px'}]">
-					产品
-				</view>
-			</view>
-		</view>
-		<scroll-view scroll-x class="bg-white nav text-gray fixed"  :style="[{top:CustomBar + 'px'}]" >
-			<view class="cu-item" :class="index==TabCur?'text-black cur':''" v-for="(item,index) in productTypeList" :key="index" @tap="tabSelect" :data-id="index">
-				{{item.ptName}}
-			</view>
-		</scroll-view>
-
-		<!-- <view class="cu-bar search bg-white" >
+		<cu-custom bgColor="bg-black" :isBack="true">
+			<block slot="backText">返回</block>
+			<block slot="content">产品搜索</block>
+		</cu-custom>
+		<view class="cu-bar search bg-white" >
 			<view class="search-form round">
 				<text class="cuIcon-search"></text>
-				<input @tap="toSearch" :adjust-position="false" type="text" placeholder="输入产品名称搜索" confirm-type="search"></input>
+				<input @input="textAInput" :adjust-position="false" type="text" placeholder="输入产品名称搜索" confirm-type="search"></input>
 			</view>
 			<view class="action">
-				<button class="cu-btn bg-black shadow-blur round">搜索</button>
+				<button class="cu-btn bg-black shadow-blur round" @tap="commitToSearch">搜索</button>
 			</view>
-		</view> -->
-		<view class="cu-card" :style="[{'margin-top':CustomBar + 'px'}]" >
+		</view>
+		<view class="text-center margin-top" v-if="!searchResult">请输入搜索条件</view>
+		<view class="text-center margin-top" v-if="searchResult">搜索‘{{content}}’</view>
+		
+		<view class="" style="margin-top: 50px;" v-if="searchResult">
+		<view class="text-center">没有查询到结果</view>
+		<view class="text-center margin-top">可联系电话<text class="margin-lr-sm text-red" style="font-size: 20px;">13811418229</text>进行询问</view>
+		</view>
+		<view class="cu-card" >
 			<view class="cu-item" v-for="(item,index) in productList" :key="index" @tap="toDetail" :data-id="index">
 				<view class="flex">
 					<view class="flex-sub padding-sm">
@@ -57,6 +48,8 @@
 				</view>
 			</view>
 		</view>
+		·
+		
 		<view class="cu-modal" :class="addToCartModel?'show':''" @touchmove.stop.prevent="">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
@@ -99,13 +92,6 @@
 				</view>
 			</view>
 		</view>
-		<view class="cu-tabbar-height"></view>
-		
-		
-		
-		
-		
-		
 	</view>
 </template>
 
@@ -123,6 +109,7 @@
 		},
 		data() {
 			return {
+				content:"",
 				CustomBar: this.CustomBar,
 				StatusBar: this.StatusBar,
 				TabCur: 0,
@@ -133,22 +120,21 @@
 				productTypeList:[],
 				productList:[],
 				productSpces:[],
-				danwei:""
+				danwei:"",
+				searchResult:false
 			}
 		},
 		computed:{
 		   ...mapState(['hasLogin','userInfo'])
 		},
-		created() {
-			var that = this;
-			product.selectAllProductType(that);
-			product.selectAllProductByTypeId(that);
-		},
 		methods: {
-			toSearch(e){
-				uni.navigateTo({
-					url:"../product/search"
-				})
+			textAInput(e){
+				this.content = e.detail.value;
+				this.searchResult = false;
+			},
+			commitToSearch(e){
+				var that = this;
+				product.selectAllProduct(that,this.content);
 			},
 			toDetail(e){
 				var index = e.currentTarget.dataset.id;
@@ -157,12 +143,6 @@
 					url:"../product/product-detail?pId="+this.productList[index].pId
 				})
 			},
-			tabSelect(e) {
-				var that = this;
-				this.TabCur = e.currentTarget.dataset.id;
-				product.selectAllProductByTypeId(that,this.TabCur);
-				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-			},
 			addToCart(e){
 				
 				var index = e.currentTarget.dataset.id;
@@ -170,11 +150,6 @@
 				this.danwei = this.productSpces[0].sBrief
 				this.addToCartModel = true;
 				
-			},
-			closeAddToCartModel(){
-				this.productSpces = [];
-				this.addToCartModel = false;
-				this.numberValue = 1;
 			},
 			commitAddToCart(){
 				console.log(this.radio);
@@ -222,10 +197,5 @@
 </script>
 
 <style>
-.impleName{
-	display: -webkit-box;
-	overflow: hidden;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-}
+
 </style>

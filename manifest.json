@@ -56,10 +56,7 @@
             "es6" : true,
             "checkSiteMap" : false
         },
-        "permission" : {},
-        "uniStatistics" : {
-            "enable" : false
-        }
+        "permission" : {}
     },
     "h5" : {
         "title" : "ColorUi for UniApp",
