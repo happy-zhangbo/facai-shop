@@ -15,6 +15,8 @@ Vue.component('components',components)
 import plugin from './pages/plugin/home.vue'
 Vue.component('plugin',plugin)
 
+import home from './pages/home/home.vue'
+Vue.component('home',home)
 
 import product from './pages/product/product.vue'
 Vue.component('product',product)

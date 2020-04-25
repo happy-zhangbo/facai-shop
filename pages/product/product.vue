@@ -5,21 +5,20 @@
 			<block slot="content">产品</block>
 		</cu-custom> -->
 		<view class="" :style="[{height:CustomBar + 'px'}]">
-			<view class="cu-bar bg-black search" :style="[{'height':CustomBar + 'px'},{'padding-top':StatusBar+'px'}]">
+			<view class="cu-bar bg-black search" :style="[{'height':CustomBar + 'px'},	{'padding-top':StatusBar+'px'}]">
 				<view class="cuIcon-searchlist padding-lg" style="font-size: 55rpx;" @tap="toSearch">
-					
 				</view>
 				<view class="content"  :style="[{top:StatusBar + 'px'}]">
 					产品
 				</view>
 			</view>
 		</view>
-		<scroll-view scroll-x class="bg-white nav text-gray fixed"  :style="[{top:CustomBar + 'px'}]" >
+
+		<scroll-view scroll-x class="bg-white nav text-gray"  :style="[{top:CustomBar + 'px'}]" >
 			<view class="cu-item" :class="index==TabCur?'text-black cur':''" v-for="(item,index) in productTypeList" :key="index" @tap="tabSelect" :data-id="index">
 				{{item.ptName}}
 			</view>
 		</scroll-view>
-
 		<!-- <view class="cu-bar search bg-white" >
 			<view class="search-form round">
 				<text class="cuIcon-search"></text>
@@ -29,7 +28,7 @@
 				<button class="cu-btn bg-black shadow-blur round">搜索</button>
 			</view>
 		</view> -->
-		<view class="cu-card" :style="[{'margin-top':CustomBar + 'px'}]" >
+		<view class="cu-card" >
 			<view class="cu-item" v-for="(item,index) in productList" :key="index" @tap="toDetail" :data-id="index">
 				<view class="flex">
 					<view class="flex-sub padding-sm">
@@ -100,12 +99,7 @@
 			</view>
 		</view>
 		<view class="cu-tabbar-height"></view>
-		
-		
-		
-		
-		
-		
+
 	</view>
 </template>
 
@@ -133,7 +127,12 @@
 				productTypeList:[],
 				productList:[],
 				productSpces:[],
-				danwei:""
+				danwei:"",
+				swiperList: [{
+					id: 0,
+					type: 'image',
+					url: 'http://image.lonelysky.com.cn/202004251710.jpg'
+				}],
 			}
 		},
 		computed:{

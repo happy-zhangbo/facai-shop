@@ -1,9 +1,15 @@
 <template>
 	<view>
+		<home v-if="PageCur=='home'"></home>
 		<product v-if="PageCur=='product'"></product>
 		<cart v-if="PageCur=='cart'"></cart>
 		<my v-if="PageCur=='my'"></my>
 		<view class="cu-bar tabbar bg-white shadow foot">
+			<view class="action" @click="NavChange" data-cur="home">
+				<view  :class="PageCur=='home'?'cuIcon-homefill text-black':'cuIcon-home text-gray'">
+				</view>
+				<view :class="PageCur=='home'?'text-black':'text-gray'">首页</view>
+			</view>
 			<view class="action" @click="NavChange" data-cur="product">
 				<view  :class="PageCur=='product'?'cuIcon-shopfill text-black':'cuIcon-shop text-gray'">
 				</view>
@@ -30,8 +36,14 @@
 		
 		data() {
 			return {
-				PageCur: 'product'
+				PageCur: 'home'
 			}
+		},
+		onLoad(e) {
+			if(e.p){
+				this.PageCur = e.p
+			}
+			
 		},
 		methods: {
 			NavChange: function(e) {

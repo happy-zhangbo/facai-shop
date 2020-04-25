@@ -173,6 +173,10 @@
 			"path":"pages/cart/fail_Pay",
 			"style":{}
 		}
+        ,{
+            "path" : "pages/home/home",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"mp-alipay": {
